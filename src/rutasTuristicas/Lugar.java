@@ -18,6 +18,9 @@ public class Lugar {
 		duracion = duracin;
 	}
 	
+	public void mostrarLugar() {
+		System.out.println(getNombreLugar() + " " + getTematica() + " " + getPuntuacion() + " " + getDuracion());
+	}
 	public String getNombreLugar() {
 		return nombreLugar;
 	}

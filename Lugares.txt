@@ -1,5 +1,4 @@
-Lugar,Temática,Valoración,Duración
-Hotel Hard Rock,Hotel,5,-
+Hotel Hard Rock,Hotel,5,-1
 Loro Parque,Parque Temático,4.5,3
 Siam Park,Parque Temático, 5, 6
 Volcan el Teide,Naturaleza,4.5, 5
