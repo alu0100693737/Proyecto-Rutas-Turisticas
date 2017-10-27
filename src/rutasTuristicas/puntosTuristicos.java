@@ -1,6 +1,7 @@
 package rutasTuristicas;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,10 +15,10 @@ public class puntosTuristicos {
 	private matrizDeTiempos matrizTiempos;
 	private matrizDeDistancias matrizDistancias;
 	
-	public puntosTuristicos(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos) {
-		//lugaresTuristicos = new ArrayList<Lugar>();
+	public puntosTuristicos(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos) throws FileNotFoundException, IOException {
+		lugaresTuristicos = new ArrayList<Lugar>();
 		matrizDistancias = new matrizDeDistancias(ficheroMatrizDistancias);
-		//matrizTiempos = new matrizDeTiempos(ficheroMatrizTiempos);
+		matrizTiempos = new matrizDeTiempos(ficheroMatrizTiempos);
 		leerFicheroPuntosTuristicos(ficheroLugares); 
 		
 		mostrarLugaresTuristicos();
