@@ -19,7 +19,8 @@ public class Lugar {
 	}
 	
 	public void mostrarLugar() {
-		System.out.println(getNombreLugar() + " " + getTematica() + " " + getPuntuacion() + " " + getDuracion());
+		System.out.println("Lugar: " + getNombreLugar());
+		System.out.println("Tematica: " + getTematica() + ". Puntuacion: " + getPuntuacion() + ". Duracion: " + getDuracion());
 	}
 	public String getNombreLugar() {
 		return nombreLugar;

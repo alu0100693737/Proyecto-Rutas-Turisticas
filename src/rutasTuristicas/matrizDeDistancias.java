@@ -7,43 +7,46 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class matrizDeDistancias {
-	private ArrayList<ArrayList<Float>> matrizDistancias;
+	private float[][] matrizDistancia;
 
-	public matrizDeDistancias(String ficheroMatrizDistancias) throws FileNotFoundException, IOException {
-		matrizDistancias = new ArrayList<ArrayList<Float>>();
-		leerMatrizDistancias(ficheroMatrizDistancias);
-		mostrarMatrizDistancias();
+	public matrizDeDistancias(String ficheroMatrizDistancias, int numLugares)
+			throws FileNotFoundException, IOException {
+
+		matrizDistancia = new float[numLugares][numLugares];
+
+		leerMatrizDistancias(ficheroMatrizDistancias, numLugares);
+		// mostrarMatrizDistancias();
 	}
 
-	public void leerMatrizDistancias(String ficheroMatrizDistancias) throws FileNotFoundException, IOException {
-		
-
-		
-		try(BufferedReader br = new BufferedReader(new FileReader(ficheroMatrizDistancias))) {
-		    StringBuilder sb = new StringBuilder();
-		    String line = br.readLine();
-
-		    while (line != null) {
-		    	ArrayList<Float> distanciaLugar = new ArrayList<Float>();
-		    	String[] auxiliar = line.split("\\s+");
-		    	for(int i = 0; i < auxiliar.length; i++) {
-					//System.out.print(auxiliar[i] + " ") ;
-					distanciaLugar.add(Float.parseFloat(auxiliar[i]));
+	public void leerMatrizDistancias(String ficheroMatrizDistancias, int numLugares)
+			throws FileNotFoundException, IOException {
+		try (BufferedReader br = new BufferedReader(new FileReader(ficheroMatrizDistancias))) {
+			
+			String line = br.readLine();
+			for (int i = 0; i < numLugares; i++) {
+				String[] auxiliar = line.split("\\s+");
+				int contador = 0;
+				for (int j = i; j < numLugares; j++) {
+					getMatrizDistancias()[i][j] = Float.parseFloat(auxiliar[contador]);
+					getMatrizDistancias()[j][i] = Float.parseFloat(auxiliar[contador]);
+					contador++;
 				}
-		    	getMatrizDistancias().add(distanciaLugar);
-		    	line = br.readLine();
-		    }
-		}
-}
-	public void mostrarMatrizDistancias() {
-		for(int i = 0; i < getMatrizDistancias().size(); ++i) {
-			for(int j = 0; j < getMatrizDistancias().get(i).size(); j++) {
-				System.out.print(getMatrizDistancias().get(i).get(j) + " ");
-			}	
-		System.out.print("\n");
+				line = br.readLine();
+			}
+			//mostrarMatrizDistancias();
 		}
 	}
-	public ArrayList<ArrayList<Float>> getMatrizDistancias() {
-	return matrizDistancias;
-}
+
+	public void mostrarMatrizDistancias() {
+		for (int i = 0; i < getMatrizDistancias().length; ++i) {
+			for (int j = 0; j < getMatrizDistancias().length; j++) {
+				System.out.print(getMatrizDistancias()[i][j] + " ");
+			}
+			System.out.print("\n");
+		}
+	}
+
+	public float[][] getMatrizDistancias() {
+		return matrizDistancia;
+	}
 }

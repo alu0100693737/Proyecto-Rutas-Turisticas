@@ -1,3 +1,4 @@
+56
 Hotel Hard Rock,Hotel,5,-1
 Loro Parque,Parque Temático,4.5,3
 Siam Park,Parque Temático, 5, 6
@@ -46,6 +47,7 @@ Blanco Bar,Nocturno,4,5
 De tapas y Cañas,Nocturno,4,5
 Sounds of Cream,Nocturno,3,3
 Parque del Drago,Restaurante,1,4.5
+Restaurante Sagrario,Restaurante,1,4.5
 Restaurante San Sebastian 57,Restaurante,1,4.5
 Aiko Sushi,Restaurante,1,4.5
 Restaurante Solana,Restaurante,1,4.5

@@ -7,44 +7,46 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class matrizDeTiempos {
-	private ArrayList<ArrayList<Integer>> matrizTiempos;
+	private int[][] matrizTiempos;
 
-	public matrizDeTiempos(String ficheroMatrizTiempos) throws FileNotFoundException, IOException {
-		matrizTiempos = new ArrayList<ArrayList<Integer>>();
-		leerMatrizTiempos(ficheroMatrizTiempos);
-		mostrarMatrizTiempos();
+	public matrizDeTiempos(String ficheroMatrizTiempos, int numLugares)
+			throws FileNotFoundException, IOException {
+
+		matrizTiempos = new int[numLugares][numLugares];
+
+		leerMatrizTiempos(ficheroMatrizTiempos, numLugares);
+		// mostrarMatrizTiempos();
 	}
 
-	public void leerMatrizTiempos(String ficheroMatrizTiempos) throws FileNotFoundException, IOException {
-		
-
-		
-		try(BufferedReader br = new BufferedReader(new FileReader(ficheroMatrizTiempos))) {
-		    StringBuilder sb = new StringBuilder();
-		    String line = br.readLine();
-
-		    while (line != null) {
-		    	ArrayList<Integer> distanciaLugar = new ArrayList<Integer>();
-		    	String[] auxiliar = line.split("\\s+");
-		    	for(int i = 0; i < auxiliar.length; i++) {
-					//System.out.print(auxiliar[i] + " ") ;
-					distanciaLugar.add(Integer.parseInt(auxiliar[i]));
+	public void leerMatrizTiempos(String ficheroMatrizTiempos, int numLugares)
+			throws FileNotFoundException, IOException {
+		try (BufferedReader br = new BufferedReader(new FileReader(ficheroMatrizTiempos))) {
+			
+			String line = br.readLine();
+			for (int i = 0; i < numLugares; i++) {
+				String[] auxiliar = line.split("\\s+");
+				int contador = 0;
+				for (int j = i; j < numLugares; j++) {
+					getMatrizTiempos()[i][j] = Integer.parseInt(auxiliar[contador]);
+					getMatrizTiempos()[j][i] = Integer.parseInt(auxiliar[contador]);
+					contador++;
 				}
-		    	getMatrizTiempos().add(distanciaLugar);
-		    	line = br.readLine();
-		    }
-		}
-}
-	public void mostrarMatrizTiempos() {
-		for(int i = 0; i < getMatrizTiempos().size(); ++i) {
-			for(int j = 0; j < getMatrizTiempos().get(i).size(); j++) {
-				System.out.print(getMatrizTiempos().get(i).get(j) + " ");
-			}	
-		System.out.print("\n");
+				line = br.readLine();
+			}
+			//mostrarMatrizTiempos();
 		}
 	}
-	public ArrayList<ArrayList<Integer>> getMatrizTiempos() {
-	return matrizTiempos;
-}
 
+	public void mostrarMatrizTiempos() {
+		for (int i = 0; i < getMatrizTiempos().length; ++i) {
+			for (int j = 0; j < getMatrizTiempos().length; j++) {
+				System.out.print(getMatrizTiempos()[i][j] + " ");
+			}
+			System.out.print("\n");
+		}
+	}
+
+	public int[][] getMatrizTiempos() {
+		return matrizTiempos;
+	}
 }
