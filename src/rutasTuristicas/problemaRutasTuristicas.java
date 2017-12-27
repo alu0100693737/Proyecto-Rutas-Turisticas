@@ -2,12 +2,17 @@ package rutasTuristicas;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public abstract class problemaRutasTuristicas {
 	private int numDiasEstancia_;
 	private int numHorasDiarias_;
 	
 	private puntosTuristicos lugaresTuristicosDisponibles_;
+	
+	//Resolucion de Problemas
+	protected ArrayList<Integer> solucionDiaria;
+	protected ArrayList<ArrayList<Integer>> lugaresVisitados;
 	
 	public problemaRutasTuristicas(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		lugaresTuristicosDisponibles_ = new puntosTuristicos(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos);
@@ -27,5 +32,13 @@ public abstract class problemaRutasTuristicas {
 	
 	public puntosTuristicos getLugaresTuristicosDisponibles() {
 		return lugaresTuristicosDisponibles_;
+	}
+	
+	public ArrayList<Integer> getSolucionDiaria() {
+		return solucionDiaria;
+	}
+	
+	public ArrayList<ArrayList<Integer>> getLugaresVisitados() {
+		return lugaresVisitados;
 	}
 }

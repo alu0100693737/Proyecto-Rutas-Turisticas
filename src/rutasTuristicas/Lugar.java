@@ -20,7 +20,7 @@ public class Lugar {
 	
 	public void mostrarLugar() {
 		System.out.println("Lugar: " + getNombreLugar());
-		System.out.println("Tematica: " + getTematica() + ". Puntuacion: " + getPuntuacion() + ". Duracion: " + getDuracion());
+		System.out.println("Tematica: " + getTematica() + ". Puntuacion: " + getPuntuacion() + ". Duracion: " + getDuracion() + "\n");
 	}
 	public String getNombreLugar() {
 		return nombreLugar;

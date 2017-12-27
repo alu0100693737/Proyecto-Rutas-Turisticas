@@ -67,8 +67,10 @@ public class puntosTuristicos {
 	}
 	
 	public void mostrarLugaresTuristicos() {
-		for(int i = 0; i < getLugaresTuristicos().size(); i++) 
+		for(int i = 0; i < getLugaresTuristicos().size(); i++) {
+			System.out.print("Lugar " + i + " ");
 			getLugaresTuristicos().get(i).mostrarLugar();
+		}
 	}
 
 	public ArrayList<Lugar> getLugaresTuristicos() {
