@@ -13,6 +13,7 @@ public abstract class problemaRutasTuristicas {
 	//Resolucion de Problemas
 	protected ArrayList<Integer> solucionDiaria;
 	protected ArrayList<ArrayList<Integer>> lugaresVisitados;
+	protected ArrayList<Integer> kilometrosViaje;
 	
 	public problemaRutasTuristicas(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		lugaresTuristicosDisponibles_ = new puntosTuristicos(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos);
@@ -40,5 +41,9 @@ public abstract class problemaRutasTuristicas {
 	
 	public ArrayList<ArrayList<Integer>> getLugaresVisitados() {
 		return lugaresVisitados;
+	}
+	
+	public ArrayList<Integer> getKilometrosViaje() {
+		return kilometrosViaje;
 	}
 }
