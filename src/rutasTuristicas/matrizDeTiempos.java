@@ -18,7 +18,7 @@ public class matrizDeTiempos {
 		// mostrarMatrizTiempos();
 	}
 
-	public void leerMatrizTiempos(String ficheroMatrizTiempos, int numLugares)
+	private void leerMatrizTiempos(String ficheroMatrizTiempos, int numLugares)
 			throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(ficheroMatrizTiempos))) {
 			

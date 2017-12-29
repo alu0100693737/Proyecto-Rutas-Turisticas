@@ -18,7 +18,7 @@ public class matrizDeDistancias {
 		// mostrarMatrizDistancias();
 	}
 
-	public void leerMatrizDistancias(String ficheroMatrizDistancias, int numLugares)
+	private void leerMatrizDistancias(String ficheroMatrizDistancias, int numLugares)
 			throws FileNotFoundException, IOException {
 		try (BufferedReader br = new BufferedReader(new FileReader(ficheroMatrizDistancias))) {
 			

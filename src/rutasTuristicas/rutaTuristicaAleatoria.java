@@ -53,7 +53,12 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 							visitadoDiasAnteriores = true;
 					if(visitadoDiasAnteriores == false) {
 						//Con el tiempo que nos queda, si sumamos el tiempo en llegar alli, la duracion de la actividad y cuanto tardamos en volver a 0 si lo elegimos, es menor que la hora maxima
-						if((minutosAcumulados + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + (getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60) +  getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[elegido][0]) < minutosTotales) {
+						if((minutosAcumulados + 
+								getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + 
+								(getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60) +  
+								getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[elegido][0]) 
+																							< minutosTotales) {
+							
 							System.out.println("\nSe añade: " + elegido);
 							getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).mostrarLugar();
 							System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " minutos");
