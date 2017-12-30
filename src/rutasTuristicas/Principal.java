@@ -8,8 +8,9 @@ public class Principal {
 		
 			//rutaTuristicaAleatoria prueba = new rutaTuristicaAleatoria(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
 
-			rutaTuristicaGreedyPonderado prueba = new rutaTuristicaGreedyPonderado(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+			//rutaTuristicaGreedyPonderado prueba = new rutaTuristicaGreedyPonderado(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
 
-		
+			rutaTuristicaGRASPPonderado prueba = new rutaTuristicaGRASPPonderado(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+
 	}
 }
