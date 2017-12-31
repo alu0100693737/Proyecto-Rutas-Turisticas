@@ -17,7 +17,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 	@Override
 	public void resolverProblema() {
 
-		solucionDiaria = new ArrayList<Integer>();
+		
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
 		kilometrosViaje = new ArrayList<Integer>();
 		valoresDiarios = new ArrayList<Float>();
@@ -31,6 +31,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 		float valorAcumulado;
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 			
+			solucionDiaria = new ArrayList<Integer>();
 			int minutosTotales = getNumHorasDiarias() * 60;
 			int minutosAcumulados = 0;
 			
@@ -90,6 +91,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 			//Añadimos distancia del ultimo al primer elemento
 			minutosAcumulados += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][0];
 			kilometrosDiarios += getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][0];
+			
 			System.out.println("\nAñadiendo la distancia hasta el lugar de inicio : " + minutosAcumulados + " min");
 			System.out.println("Añadiendo los kilometros hasta el lugar de inicio: " + kilometrosDiarios + " km\n\n");
 
@@ -106,7 +108,6 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 			//Añadimos 
 			getLugaresVisitados().add(getSolucionDiaria());
 			getKilometrosViaje().add(kilometrosDiarios);
-			getSolucionDiaria().clear();
 			
 			getValoresDiarios().add(valorAcumulado);
 		}
@@ -116,6 +117,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 		float valorTotalViaje = 0;
 		for(int i = 0; i < getLugaresVisitados().size(); i++) {
 			valorTotalViaje += getValoresDiarios().get(i);
+			System.out.println(getLugaresVisitados().get(i));
 		}
 		
 		System.out.println("\nValor total del viaje: " + valorTotalViaje);

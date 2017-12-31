@@ -1,57 +1,57 @@
 56
 Hotel Hard Rock,Hotel,5,-1
-Loro Parque,Parque Temático,4.5,3
-Siam Park,Parque Temático, 5, 6
-Volcan el Teide,Naturaleza,5, 4.5
-Cueva del Viento,Naturaleza,5,2.5
-Tenerife Snorkelling and kayaking,Acuático,5,3
-Paradise Divers,Acuático,5,3
-Xplore Tenerife,Acuático,5,3
-Lj Diving,Acuático,5,3
-Centro de Buceo Aqua-Marina,Acuático,5,3
-West Tenerife,Acuático,5,2
-Barranco de Masca,Naturaleza,4.5,4
+Loro Parque,Parque Temático,10,3
+Siam Park,Parque Temático, 10, 6
+Volcan el Teide,Naturaleza,100, 4.5
+Cueva del Viento,Naturaleza,8,2.5
+Tenerife Snorkelling and kayaking,Acuático,8,3
+Paradise Divers,Acuático,7,3
+Xplore Tenerife,Acuático,7,3
+Lj Diving,Acuático,8,3
+Centro de Buceo Aqua-Marina,Acuático,8,3
+West Tenerife,Acuático,6,2
+Barranco de Masca,Naturaleza,7,4
 ARTlandya,Cultura y monumentos,5,1
-Las montañas de Anaga,Naturaleza,4.5,3.5
-Playa del Duque,Playa,4.5,3
-Playa de Benijo,Playa,4.5,3
-Costa Martianez,Playa,4.5,3
-Centro Histórico de San Cristóbal de la Laguna,Cultura y monumentos,4,2
-Monkey Park,Parque Temático,4,3
-Piscinas Naturales El Caletón,Playa,4,3
-Jardín el Botánico,Naturaleza,4.5,1
-El Médano,Playa,4.5,3
-Barranco del Infierno,Naturaleza,4.5,3
-Crystals Palace,Nocturno,5,3
-Coco Beach,Nocturno,5,3
-Achaman DiscoPub,Nocturno,4,3
-The Theatre Cabaret Bar,Nocturno,4.5,3
-Magnums Bar,Nocturno,4.5,3
+Las montañas de Anaga,Naturaleza,8,3.5
+Playa del Duque,Playa,8,3
+Playa de Benijo,Playa,4,3
+Costa Martianez,Playa,7,3
+Centro Histórico de San Cristóbal de la Laguna,Cultura y monumentos,7,2
+Monkey Park,Parque Temático,6,3
+Piscinas Naturales El Caletón,Playa,8,3
+Jardín el Botánico,Naturaleza,7,1
+El Médano,Playa,8,3
+Barranco del Infierno,Naturaleza,8,3
+Crystals Palace,Nocturno,6,3
+Coco Beach,Nocturno,8,3
+Achaman DiscoPub,Nocturno,7,3
+The Theatre Cabaret Bar,Nocturno,7,3
+Magnums Bar,Nocturno,6,3
 Reserva Ambiental San Blas,Naturaleza,4,3
-Parque Las Águilas,Parque Temático,4,3
-Museo de la Naturaleza y el Hombre,Cultura y monumentos,4.5,1
-TEA Tenerife Espacio de las Artes,Cultura y monumentos,4,1
-Observatorio del Teide,Naturaleza,4.5,1
-Plaza de España,Cultura y monumentos,3.5,0.5
-Auditorio de Tenerife,Cultura y monumentos,4.5,1
+Parque Las Águilas,Parque Temático,5,3
+Museo de la Naturaleza y el Hombre,Cultura y monumentos,6,1
+TEA Tenerife Espacio de las Artes,Cultura y monumentos,6,1
+Observatorio del Teide,Naturaleza,8,1
+Plaza de España,Cultura y monumentos,7,0.5
+Auditorio de Tenerife,Cultura y monumentos,7,1
 Pirámides de Güimar,Cultura y monumentos,3,1
 Museo Histórico Militar de Canarias,Cultura y Monumentos,3,1
-Bubble Soccer,Actividades,3.5,2
-Montaña Roja,Playa,4,3
-Kangaroo Tandem Tenerife,Actividades,5,1.5
-Tenerfly Parapente,Actividades,5,2
-Airsports Tenerife,Actividades,4.5,2
-Enminube Parapente,Actividades,5,2
-Air Canaries,Actividades,4,2
-Blanco Bar,Nocturno,4,2
-De tapas y Cañas,Nocturno,4,2
-Sounds of Cream,Nocturno,3,2
-Parque del Drago,Cultura y Monumentos,4.5,0.5
-Restaurante Sagrario,Restaurante,4.5,1
-Restaurante San Sebastian 57,Restaurante,4.5,1
-Aiko Sushi,Restaurante,4.5,1
-Restaurante Solana,Restaurante,4.5,1
-Restaurante Bodegón Vijariego,Restaurante,4.5,1
-La posada del pez,Restaurante,4.5,1
-Bimba&Club,Restaurante,4.5,2
-Restaurante Kazan,Restaurante,4.5,1
+Bubble Soccer,Actividades,2,2
+Montaña Roja,Playa,6,3
+Kangaroo Tandem Tenerife,Actividades,7,1.5
+Tenerfly Parapente,Actividades,8,2
+Airsports Tenerife,Actividades,7,2
+Enminube Parapente,Actividades,6,2
+Air Canaries,Actividades,7,2
+Blanco Bar,Nocturno,7,2
+De tapas y Cañas,Nocturno,8,2
+Sounds of Cream,Nocturno,7,2
+Parque del Drago,Cultura y Monumentos,8,0.5
+Restaurante Sagrario,Restaurante,8,1
+Restaurante San Sebastian 57,Restaurante,8,1
+Aiko Sushi,Restaurante,4,1
+Restaurante Solana,Restaurante,6,1
+Restaurante Bodegón Vijariego,Restaurante,7,1
+La posada del pez,Restaurante,6,1
+Bimba&Club,Restaurante,7,2
+Restaurante Kazan,Restaurante,5,1

@@ -121,8 +121,8 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 			
 			//Añadimos la distancia del ultimo al lugar de inicio
 			tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][0];
+					
 			getSolucionDiaria().add(0);
-			
 			getLugaresVisitados().add(getSolucionDiaria());
 			getValoresDiarios().add(valorAcumulado);
 			getTiemposDiarios().add(tiempoAcumulado);
@@ -136,6 +136,7 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 		
 		for(int i = 0; i < getLugaresVisitados().size(); i++) {
 			System.out.println("\nDia " + (i + 1) + ": ");
+			
 			for(int j = 0; j < getLugaresVisitados().get(i).size(); j++) {
 				getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getLugaresVisitados().get(i).get(j)).mostrarLugar();
 			}
@@ -147,7 +148,7 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 		for(int i = 0; i < getLugaresVisitados().size(); i++) {
 			valorTotalViaje += getValoresDiarios().get(i);
 		}
-		System.out.println("\nValor total del viaje: " + valorTotalViaje);
+		System.out.println("\nValor total del viaje: " + (valorTotalViaje));
 	}
 
 	public ArrayList<Float> getValoresDiarios() {
