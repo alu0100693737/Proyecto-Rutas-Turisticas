@@ -142,6 +142,12 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 			System.out.println("Tiempo utilizado: " + getTiemposDiarios().get(i) + " min");
 			System.out.println("Valor Acumulado diario: " + getValoresDiarios().get(i));
 		}
+		
+		float valorTotalViaje = 0;
+		for(int i = 0; i < getLugaresVisitados().size(); i++) {
+			valorTotalViaje += getValoresDiarios().get(i);
+		}
+		System.out.println("\nValor total del viaje: " + valorTotalViaje);
 	}
 
 	public ArrayList<Float> getValoresDiarios() {

@@ -104,14 +104,18 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 										if(getLugaresCandidatos().get(a).getX() > peor) {
 											peor = getLugaresCandidatos().get(a).getX();
 											posicionPeor = a;
+											
 										}
 									}
 									
 									//si el valor que se desea introducir es mejor que el peor ya insertado, borramos el anterior e insertamos el nuevo
 									if((getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
 											getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion()) < peor) {
-										System.out.println("Quitando un elemento y poniendo otro");
-										getLugaresCandidatos().remove(posicionPeor);
+										System.out.println("Quitando " + peor + " poniendo " + getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
+												getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion());
+
+										getLugaresCandidatos().remove((int)posicionPeor);
+	
 										getLugaresCandidatos().add(new Point2D.Float(getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
 												getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion(), i));
 									}
@@ -131,7 +135,7 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 						System.out.println("Candidato num " + a + ": " + getLugaresCandidatos().get(a));
 					}
 					
-					int elegido = (int)(Math.random() * LRC);
+					int elegido = (int)(Math.random() * getLugaresCandidatos().size());
 					
 					System.out.println("Elegido " + elegido);
 					
@@ -179,6 +183,13 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			System.out.println("Tiempo utilizado: " + getTiemposDiarios().get(i) + " min");
 			System.out.println("Valor Acumulado diario: " + getValoresDiarios().get(i));
 		}
+		
+		float valorTotalViaje = 0;
+		for(int i = 0; i < getLugaresVisitados().size(); i++) {
+			valorTotalViaje += getValoresDiarios().get(i);
+		}
+		System.out.println("\n\nValor total del viaje: " + valorTotalViaje);
+		
 	}
 
 	public ArrayList<Float> getValoresDiarios() {

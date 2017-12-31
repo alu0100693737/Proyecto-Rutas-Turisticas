@@ -7,6 +7,7 @@ import java.util.ArrayList;
 //Algoritmos aleatorio, calculo de tiempo máximo
 public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 
+	private ArrayList<Float> valoresDiarios;
 	public rutaTuristicaAleatoria(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 
@@ -19,12 +20,15 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 		solucionDiaria = new ArrayList<Integer>();
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
 		kilometrosViaje = new ArrayList<Integer>();
+		valoresDiarios = new ArrayList<Float>();
 
 		System.out.println("Algoritmo Aleatorio");
 		System.out.println("Tenemos " + getNumDiasEstancia() + " dias de estancia con " + getNumHorasDiarias() + " horas de visita a la isla.");
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
 		System.out.println("\n");
 
+		
+		float valorAcumulado;
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 			
 			int minutosTotales = getNumHorasDiarias() * 60;
@@ -32,6 +36,8 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 			
 			//Kilometros diarios hechos en la ruta elegida
 			int kilometrosDiarios = 0;
+			
+			valorAcumulado = 0;
 
 			System.out.println("Dia numero " + (k + 1));
 			//Cada dia
@@ -60,6 +66,10 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 																							< minutosTotales) {
 							
 							System.out.println("\nSe añade: " + elegido);
+							
+							valorAcumulado += getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] /
+									getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getPuntuacion();
+							
 							getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).mostrarLugar();
 							System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " minutos");
 							System.out.println("La actividad tiene una duracion de " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60 + " minutos");
@@ -87,15 +97,32 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 			System.out.println("Resumen dia " + (k + 1) + " :");
 			for(int i = 0; i < getSolucionDiaria().size(); i++) {
 				getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
+				
 			}
 			System.out.println("Minutos acumulados " + minutosAcumulados + " min");
 			System.out.println("Kilometros diarios " + kilometrosDiarios + " km");
+			System.out.println("Valor Acumulado diario: " + valorAcumulado);
 
 			//Añadimos 
 			getLugaresVisitados().add(getSolucionDiaria());
 			getKilometrosViaje().add(kilometrosDiarios);
 			getSolucionDiaria().clear();
-			System.out.println("\n");
+			
+			getValoresDiarios().add(valorAcumulado);
 		}
+		
+		System.out.println("\n-----------------------------------------");
+		
+		float valorTotalViaje = 0;
+		for(int i = 0; i < getLugaresVisitados().size(); i++) {
+			valorTotalViaje += getValoresDiarios().get(i);
+		}
+		
+		System.out.println("\nValor total del viaje: " + valorTotalViaje);
+		
+	}
+	
+	public ArrayList<Float> getValoresDiarios() {
+		return valoresDiarios;
 	}
 }
