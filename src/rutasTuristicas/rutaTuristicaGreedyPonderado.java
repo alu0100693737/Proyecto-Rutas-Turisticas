@@ -9,9 +9,6 @@ import java.util.ArrayList;
 
 //Algoritmos Greedy, Ponderado. Menor Tiempo en llegar, sin considerar tiempo en la actividad. Distancia / (Valoracion * factorPonderado) 
 public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {  
-
-	private ArrayList<Float> valoresDiarios;
-	private ArrayList<Integer> tiemposDiarios;
 	
 	public rutaTuristicaGreedyPonderado(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
@@ -58,19 +55,8 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 				//Buscamos entre todas las posibilidades
 				for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
 
-					boolean yaVisitado = false;
-
-					//Si aun no ha sido visitado ese dia o los anteriores si los hubiera
-					for(int l = 0; l < getLugaresVisitados().size(); l++) 
-						if(getLugaresVisitados().get(l).contains(i)) 
-							yaVisitado = true;
-
-
-					if(getSolucionDiaria().contains(i)) 
-						yaVisitado = true;
-
 					//Si no ha sido visitado
-					if(yaVisitado == false) {
+					if(yaVisitado(i, getLugaresVisitados(), getSolucionDiaria()) == false) {
 
 						//Si el valor es mejor que el actual
 						if((getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
@@ -130,32 +116,7 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 			System.out.println("Dia " + (k + 1) + " terminado.\n----------------------------------------------------------------------------------\n");
 			System.out.println("Lugares Visitados " + getSolucionDiaria());
 		}
-		
-		System.out.println("\n-----------------------------------------");
-		System.out.println("Resumen del itinerario: ");
-		
-		for(int i = 0; i < getLugaresVisitados().size(); i++) {
-			System.out.println("\nDia " + (i + 1) + ": ");
-			
-			for(int j = 0; j < getLugaresVisitados().get(i).size(); j++) {
-				getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getLugaresVisitados().get(i).get(j)).mostrarLugar();
-			}
-			System.out.println("Tiempo utilizado: " + getTiemposDiarios().get(i) + " min");
-			System.out.println("Valor Acumulado diario: " + getValoresDiarios().get(i));
-		}
-		
-		float valorTotalViaje = 0;
-		for(int i = 0; i < getLugaresVisitados().size(); i++) {
-			valorTotalViaje += getValoresDiarios().get(i);
-		}
-		System.out.println("\nValor total del viaje: " + (valorTotalViaje));
-	}
-
-	public ArrayList<Float> getValoresDiarios() {
-		return valoresDiarios;
+		mostrarItinerarioViaje();
 	}
 	
-	public ArrayList<Integer> getTiemposDiarios() {
-		return tiemposDiarios;
-	}
 }

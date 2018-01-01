@@ -55,7 +55,6 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			boolean encontrado = true;
 
 			while(encontrado) {
-
 				System.out.println("\nBuscando un lugar a visitar\n");
 
 				//Candidatos a ocupar el siguiente lugar
@@ -64,23 +63,8 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 				//Buscamos entre todas las posibilidades
 				for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
 
-					boolean yaVisitado = false;
-
-					//Si aun no ha sido visitado ese dia o los anteriores si los hubiera
-					for(int l = 0; l < getLugaresVisitados().size(); l++) 
-						if(getLugaresVisitados().get(l).contains(i)) 
-							yaVisitado = true;
-
-
-					if(getSolucionDiaria().contains(i)) 
-						yaVisitado = true;
-
 					//Si no ha sido visitado
-					if(yaVisitado == false) {
-
-						//Si el valor es mejor que el actual
-						//if((getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
-						//		getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion()) < valor) {
+					if(yaVisitado(i, getLugaresVisitados(), getSolucionDiaria()) == false) {
 
 						//Si se puede introducir por tiempo
 						if(((getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][i] + 
@@ -103,7 +87,6 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 									if(getLugaresCandidatos().get(a).getX() > peor) {
 										peor = getLugaresCandidatos().get(a).getX();
 										posicionPeor = a;
-
 									}
 								}
 
@@ -118,7 +101,6 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 									getLugaresCandidatos().add(new Point2D.Float(getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
 											getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion(), i));
 								}
-
 							}
 						}
 					} 
@@ -176,7 +158,7 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 				for(int i = 0; i < getSolucionDiaria().size(); i++) 
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
 			}*/
-			
+
 			//Aplicar busqueda local
 			System.out.println("\nAplicando busqueda local");
 			busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados());
@@ -188,24 +170,8 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			System.out.println("Dia " + (k + 1) + " terminado.\n----------------------------------------------------------------------------------\n");
 			System.out.println("Lugares Visitados " + getSolucionDiaria());
 		}
-
-		System.out.println("\n-----------------------------------------");
-		System.out.println("Resumen del itinerario: ");
-
-		for(int i = 0; i < getLugaresVisitados().size(); i++) {
-			System.out.println("\nDia " + (i + 1) + ": ");
-			for(int j = 0; j < getLugaresVisitados().get(i).size(); j++) {
-				getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getLugaresVisitados().get(i).get(j)).mostrarLugar();
-			}
-			System.out.println("Tiempo utilizado: " + getTiemposDiarios().get(i) + " min");
-			System.out.println("Valor Acumulado diario: " + getValoresDiarios().get(i));
-		}
-
-		float valorTotalViaje = 0;
-		for(int i = 0; i < getLugaresVisitados().size(); i++) {
-			valorTotalViaje += getValoresDiarios().get(i);
-		}
-		System.out.println("\n\nValor total del viaje: " + valorTotalViaje);
+		
+		mostrarItinerarioViaje();
 	}
 
 	public ArrayList<Float> getValoresDiarios() {
@@ -241,27 +207,55 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 	}
 
 	public void busquedaLocal2a1(ArrayList<Integer> visitaDiaria, ArrayList<ArrayList<Integer>> yaVisitados) { 
+		visitaDiaria = new ArrayList<Integer>();
+		visitaDiaria.add(0); visitaDiaria.add(6); visitaDiaria.add(5); visitaDiaria.add(22); visitaDiaria.add(0);
 		System.out.println("Busqueda local 2 Lugares a 1");
 
 		System.out.println("Valor actual " + calcularValor(visitaDiaria));
-
+		System.out.println("Visita actual " + visitaDiaria);
 
 		ArrayList<Integer> copiaDia = new ArrayList<Integer>(visitaDiaria);
+		float valorAMejorar = calcularValor(visitaDiaria);
+		
+		ArrayList<Integer> candidato = new ArrayList<Integer>();
+		float valorCandidato = valorAMejorar;
 
 		//Todas las combinaciones eliminando la salida y llegada, Hard Rock
 		for(int j = 1; j < (visitaDiaria.size() - 1); j++) {
-			for(int k = (j +1); k < (visitaDiaria.size() - 1); k++) {
+			for(int k = (j + 1); k < (visitaDiaria.size() - 1); k++) {
 				//ERROR EN j y k
 				copiaDia = new ArrayList<Integer>(visitaDiaria);
 
-				copiaDia.remove(j);
+				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(j)));
 				System.out.println("Valor actual " + calcularValor(copiaDia));
-				copiaDia.remove(k);
+				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(k)));
 				System.out.println("Valor actual " + calcularValor(copiaDia));
-
+				System.out.println("Hemos borrado " + visitaDiaria.get(j) + " y " + visitaDiaria.get(k));
 				System.out.println(copiaDia);
+				for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
+
+					if(yaVisitado(i, getLugaresVisitados(), visitaDiaria) == false) {
+						for(int l = 1; l < (copiaDia.size() - 1); l++) {
+							copiaDia.add(l, i);
+							if(calcularValor(copiaDia) < valorAMejorar) {
+								if(valorCandidato > calcularValor(copiaDia)) {
+									candidato = new ArrayList<Integer>(copiaDia);
+									valorCandidato = calcularValor(copiaDia);
+									System.out.println("Posibilidad de cambio en " + i);
+								}
+							}
+							copiaDia.remove(l);
+						}
+					}
+				}
+				
 				
 			}
+		}
+		if(valorCandidato != valorAMejorar) {
+			copiaDia = candidato;
+			System.out.println("Solucion " + copiaDia);
+			System.out.println("Calculando valor " + calcularValor(copiaDia));
 			
 		}
 	}
@@ -275,6 +269,10 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(dia.get(i)).getPuntuacion();
 		}
 		return aux;
+	}
+	
+	public float calcularTiempoEmpleado(ArrayList<Integer> dia) {
+		
 	}
 
 }
