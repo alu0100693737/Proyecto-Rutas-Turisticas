@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"rutasTuristicas","l":"problemaRutasTuristicas"}]

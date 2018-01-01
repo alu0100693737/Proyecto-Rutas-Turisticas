@@ -92,15 +92,11 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 				}
 			}
 			
-			//Añadimos la distancia del ultimo al lugar de inicio
-			//tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][0];
-					
 			getSolucionDiaria().add(0);
 			getLugaresVisitados().add(getSolucionDiaria());
 
 			System.out.println("Valor: " + calcularValorDiario(getSolucionDiaria()));
 			System.out.println("Tiempo acumulado " + calcularTiempoEmpleado(getSolucionDiaria()));
-
 			System.out.println("Dia " + (k + 1) + " terminado.\n----------------------------------------------------------------------------------\n");
 			System.out.println("Lugares Visitados " + getSolucionDiaria());
 		}
