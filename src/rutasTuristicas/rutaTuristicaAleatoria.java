@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 //Algoritmos aleatorio, calculo de tiempo máximo
 public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
-
-	private ArrayList<Float> valoresDiarios;
+	
 	public rutaTuristicaAleatoria(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 
@@ -16,18 +15,15 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 
 	@Override
 	public void resolverProblema() {
-
+		
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
 		kilometrosViaje = new ArrayList<Integer>();
-		valoresDiarios = new ArrayList<Float>();
 
 		System.out.println("Algoritmo Aleatorio");
 		System.out.println("Tenemos " + getNumDiasEstancia() + " dias de estancia con " + getNumHorasDiarias() + " horas de visita a la isla.");
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
 		System.out.println("\n");
 
-
-		float valorAcumulado;
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 
 			solucionDiaria = new ArrayList<Integer>();
@@ -36,8 +32,6 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 
 			//Kilometros diarios hechos en la ruta elegida
 			int kilometrosDiarios = 0;
-
-			valorAcumulado = 0;
 
 			System.out.println("Dia numero " + (k + 1));
 			//Cada dia
@@ -61,14 +55,11 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 							< minutosTotales) {
 
 						System.out.println("\nSe añade: " + elegido);
-
-						valorAcumulado += getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] /
-								getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getPuntuacion();
-
 						getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).mostrarLugar();
 						System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " minutos");
 						System.out.println("La actividad tiene una duracion de " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60 + " minutos");
 						System.out.println("Kilometros hechos para llegar : " + getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " km");
+						
 						//Reseteamos las comparaciones
 						maximoComparaciones = 0;
 						minutosAcumulados += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + (getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60);
@@ -95,28 +86,24 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 
 			}
 			System.out.println("Minutos acumulados " + minutosAcumulados + " min");
+			System.out.println("QUe es lo mismo que " + calcularTiempoEmpleado(getSolucionDiaria()));
 			System.out.println("Kilometros diarios " + kilometrosDiarios + " km");
-			System.out.println("Valor Acumulado diario: " + valorAcumulado);
+			System.out.println("Valor Acumulado diario: " + calcularValorDiario(getSolucionDiaria()));
 
 			//Añadimos 
 			getLugaresVisitados().add(getSolucionDiaria());
 			getKilometrosViaje().add(kilometrosDiarios);
-
-			getValoresDiarios().add(valorAcumulado);
 		}
 
 		System.out.println("\n-----------------------------------------");
 
 		float valorTotalViaje = 0;
 		for(int i = 0; i < getLugaresVisitados().size(); i++) {
-			valorTotalViaje += getValoresDiarios().get(i);
+			valorTotalViaje += calcularValorDiario(getLugaresVisitados().get(i));
 			System.out.println(getLugaresVisitados().get(i));
 		}
 
 		System.out.println("\nValor total del viaje: " + valorTotalViaje);
 	}
 
-	public ArrayList<Float> getValoresDiarios() {
-		return valoresDiarios;
-	}
 }

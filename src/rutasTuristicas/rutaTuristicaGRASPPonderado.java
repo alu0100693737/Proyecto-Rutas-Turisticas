@@ -170,7 +170,7 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			System.out.println("Dia " + (k + 1) + " terminado.\n----------------------------------------------------------------------------------\n");
 			System.out.println("Lugares Visitados " + getSolucionDiaria());
 		}
-		
+		System.out.println("Tiempo acumulado " + getTiemposDiarios().get(0) + " deberia ser lo mismo que " + calcularTiempoEmpleado(getLugaresVisitados().get(0)));
 		mostrarItinerarioViaje();
 	}
 
@@ -191,13 +191,13 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 		//No se puede modificar el elemento 0
 		ArrayList<Integer> copiaVisitaDiaria = new ArrayList<Integer>(visitaDiaria);
 
-		float valorActual = calcularValor(visitaDiaria);
+		float valorActual = calcularValorDiario(visitaDiaria);
 		for(int i = 1; i < copiaVisitaDiaria.size() - 2; i++) {
 			int posAux = copiaVisitaDiaria.get(i);
 			copiaVisitaDiaria.set(i, copiaVisitaDiaria.get(i + 1));
 			copiaVisitaDiaria.set(i + 1, posAux);
-			if(valorActual > calcularValor(copiaVisitaDiaria)) {
-				System.out.println("Valor actual " + valorActual + " Valor nuevo " + calcularValor(copiaVisitaDiaria));
+			if(valorActual > calcularValorDiario(copiaVisitaDiaria)) {
+				System.out.println("Valor actual " + valorActual + " Valor nuevo " + calcularValorDiario(copiaVisitaDiaria));
 				System.out.println("Se ha encontrado una mejora ");
 				System.out.println("Antes: " + visitaDiaria + " Ahora: " + copiaVisitaDiaria);
 				visitaDiaria = new ArrayList<Integer>(copiaVisitaDiaria);
@@ -211,11 +211,11 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 		visitaDiaria.add(0); visitaDiaria.add(6); visitaDiaria.add(5); visitaDiaria.add(22); visitaDiaria.add(0);
 		System.out.println("Busqueda local 2 Lugares a 1");
 
-		System.out.println("Valor actual " + calcularValor(visitaDiaria));
+		System.out.println("Valor actual " + calcularValorDiario(visitaDiaria));
 		System.out.println("Visita actual " + visitaDiaria);
 
 		ArrayList<Integer> copiaDia = new ArrayList<Integer>(visitaDiaria);
-		float valorAMejorar = calcularValor(visitaDiaria);
+		float valorAMejorar = calcularValorDiario(visitaDiaria);
 		
 		ArrayList<Integer> candidato = new ArrayList<Integer>();
 		float valorCandidato = valorAMejorar;
@@ -227,9 +227,9 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 				copiaDia = new ArrayList<Integer>(visitaDiaria);
 
 				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(j)));
-				System.out.println("Valor actual " + calcularValor(copiaDia));
+				System.out.println("Valor actual " + calcularValorDiario(copiaDia));
 				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(k)));
-				System.out.println("Valor actual " + calcularValor(copiaDia));
+				System.out.println("Valor actual " + calcularValorDiario(copiaDia));
 				System.out.println("Hemos borrado " + visitaDiaria.get(j) + " y " + visitaDiaria.get(k));
 				System.out.println(copiaDia);
 				for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
@@ -237,10 +237,10 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 					if(yaVisitado(i, getLugaresVisitados(), visitaDiaria) == false) {
 						for(int l = 1; l < (copiaDia.size() - 1); l++) {
 							copiaDia.add(l, i);
-							if(calcularValor(copiaDia) < valorAMejorar) {
-								if(valorCandidato > calcularValor(copiaDia)) {
+							if(calcularValorDiario(copiaDia) < valorAMejorar) {
+								if(valorCandidato > calcularValorDiario(copiaDia)) {
 									candidato = new ArrayList<Integer>(copiaDia);
-									valorCandidato = calcularValor(copiaDia);
+									valorCandidato = calcularValorDiario(copiaDia);
 									System.out.println("Posibilidad de cambio en " + i);
 								}
 							}
@@ -255,24 +255,8 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 		if(valorCandidato != valorAMejorar) {
 			copiaDia = candidato;
 			System.out.println("Solucion " + copiaDia);
-			System.out.println("Calculando valor " + calcularValor(copiaDia));
+			System.out.println("Calculando valor " + calcularValorDiario(copiaDia));
 			
 		}
 	}
-
-
-	//Calcula el valor de visitar un array de sitios
-	public float calcularValor(ArrayList<Integer> dia) {
-		float aux = 0;
-		for(int i = 1; i < (dia.size() - 1); i++) {
-			aux += getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[dia.get(i - 1)][dia.get(i)] /
-					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(dia.get(i)).getPuntuacion();
-		}
-		return aux;
-	}
-	
-	public float calcularTiempoEmpleado(ArrayList<Integer> dia) {
-		
-	}
-
 }

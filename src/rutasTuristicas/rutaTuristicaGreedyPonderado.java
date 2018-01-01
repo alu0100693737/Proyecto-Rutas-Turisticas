@@ -21,15 +21,11 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 
 		//Introducir factor ponderado
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
-		valoresDiarios = new ArrayList<Float>();
-		tiemposDiarios = new ArrayList<Integer>();
 
 		System.out.println("Algoritmo Greedy Ponderado KM/Valoracion");
 		System.out.println("Tenemos " + getNumDiasEstancia() + " dias de estancia con " + getNumHorasDiarias() + " horas de visita a la isla.");
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
-
-		float valorAcumulado;
-		int tiempoAcumulado;
+		
 		//Para el conjunto de dias
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 			System.out.println("\nDia: " + (k + 1));
@@ -37,16 +33,12 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 
 			getSolucionDiaria().add(0);
 
-			valorAcumulado = 0;
-			tiempoAcumulado = 0;
+			int tiempoAcumulado = 0; //No sobrepasarse del limite
+			int posicionEncontrada = 0;
+			boolean encontrado = true;
 
 			//BUSCAMOS EL MEJOR CANDIDATO DESDE NUESTRA POSICION ACTUAL
 			//Recorremos los lugares que podemos visitar
-
-			int posicionEncontrada = 0;
-
-			boolean encontrado = true;
-
 			while(encontrado) {
 
 				System.out.println("\nBuscando un lugar a visitar\n");
@@ -89,30 +81,26 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 					
 					System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][posicionEncontrada] + " y estaremos en la actividad " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(posicionEncontrada).getDuracion() * 60);
 					
-					//Añadimos el tiempo que tarda en llegar al sitio
-					tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][posicionEncontrada];
-					//Añadimos el tiempo que estará en el sitio
-					tiempoAcumulado += getLugaresTuristicosDisponibles().getLugaresTuristicos().get(posicionEncontrada).getDuracion() * 60;
-					
+					//Añadimos el tiempo que tarda en llegar al sitio y la duracion de la actividad
+					tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][posicionEncontrada] + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(posicionEncontrada).getDuracion() * 60;
+
 					System.out.println("Tiempo acumulado " + tiempoAcumulado + " min");
 					System.out.println("Valor: " + valor);
-					valorAcumulado += valor;
-					System.out.println("Valor acumulado " + valorAcumulado);
-
+					
 					//Añadimos el lugar
 					getSolucionDiaria().add(posicionEncontrada);
 				}
-
 			}
 			
 			//Añadimos la distancia del ultimo al lugar de inicio
-			tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][0];
+			//tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][0];
 					
 			getSolucionDiaria().add(0);
 			getLugaresVisitados().add(getSolucionDiaria());
-			getValoresDiarios().add(valorAcumulado);
-			getTiemposDiarios().add(tiempoAcumulado);
-			
+
+			System.out.println("Valor: " + calcularValorDiario(getSolucionDiaria()));
+			System.out.println("Tiempo acumulado " + calcularTiempoEmpleado(getSolucionDiaria()));
+
 			System.out.println("Dia " + (k + 1) + " terminado.\n----------------------------------------------------------------------------------\n");
 			System.out.println("Lugares Visitados " + getSolucionDiaria());
 		}
