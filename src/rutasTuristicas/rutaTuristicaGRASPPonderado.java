@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Clase rutaTuristicaGRASPPonderado
@@ -28,7 +29,7 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 	 * Número de candidatos para realizar la elección del próximo lugar
 	 */
 	private final int LRC = 3;
-	
+
 	/**
 	 * Mejores lugares candidatos, se almacena en un ArrayList de tipo Point2D con valor,posición (float,int)
 	 */
@@ -63,6 +64,10 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 	 * la actividad. Debe llegar al punto de partida antes de que se cumpla el numHoras Máximo
 	 */
 	public void resolverProblema() {
+
+		System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
+		Scanner n = new Scanner(System.in);
+		boolean busquedalocal = n.nextBoolean();
 
 		//Introducir factor ponderado
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
@@ -161,7 +166,7 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 
 					System.out.println("Tiempo acumulado " + tiempoAcumulado + " min");
 					System.out.println("Valor: " + getLugaresCandidatos().get(elegido).getX());
-					
+
 					//A�adimos el lugar
 					getSolucionDiaria().add((int)getLugaresCandidatos().get(elegido).getY());
 				}
@@ -170,17 +175,20 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			getSolucionDiaria().add(0);
 			mostrarConsultaItinerarioDia(getSolucionDiaria());
 
-			/*
-			System.out.println("Aplicando Busqueda Local ");
+
+			System.out.println("Aplicando Mejora basada en agitación sobre la solución ");
 			if(getSolucionDiaria() != busquedaLocalCambioVisita(getSolucionDiaria())) {
 				System.out.println("Cambio en la solucion, imprimimos de nuevo el itinerario: ");
 				for(int i = 0; i < getSolucionDiaria().size(); i++) 
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
-			}*/
-
-			//Aplicar busqueda local
-			System.out.println("\nAplicando busqueda local");
-			busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados());
+			}
+			if(busquedalocal) {
+				//Aplicar busqueda local
+				System.out.println("\nAplicando busqueda local 2 a 1");
+				while(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()) != getSolucionDiaria()) {
+					solucionDiaria = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
+				}
+			}
 
 			getLugaresVisitados().add(getSolucionDiaria());
 
@@ -191,81 +199,12 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 		mostrarItinerarioViaje();
 	}
 
+	
+	/** 
+	 * Método que devuelve los lugares candidatos para la visita del próximo lugar
+	 * @return ArrayList de tipo Point2D Float (valor, posicion)
+	 */
 	public ArrayList<Point2D.Float> getLugaresCandidatos() {
 		return lugaresCandidatos;
-	}
-
-	public ArrayList<Integer> busquedaLocalCambioVisita(ArrayList<Integer> visitaDiaria) { //ej: [0,6,5,22,0] -> 1.6589228     [0,5,6,22,0] -> 1.5035715  
-		System.out.println("Busqueda local de reemplazo");
-		//No se puede modificar el elemento 0
-		ArrayList<Integer> copiaVisitaDiaria = new ArrayList<Integer>(visitaDiaria);
-
-		float valorActual = calcularValorDiario(visitaDiaria);
-		for(int i = 1; i < copiaVisitaDiaria.size() - 2; i++) {
-			int posAux = copiaVisitaDiaria.get(i);
-			copiaVisitaDiaria.set(i, copiaVisitaDiaria.get(i + 1));
-			copiaVisitaDiaria.set(i + 1, posAux);
-			if(valorActual > calcularValorDiario(copiaVisitaDiaria)) {
-				System.out.println("Valor actual " + valorActual + " Valor nuevo " + calcularValorDiario(copiaVisitaDiaria));
-				System.out.println("Se ha encontrado una mejora ");
-				System.out.println("Antes: " + visitaDiaria + " Ahora: " + copiaVisitaDiaria);
-				visitaDiaria = new ArrayList<Integer>(copiaVisitaDiaria);
-			}
-		}
-		return visitaDiaria;
-	}
-
-	public void busquedaLocal2a1(ArrayList<Integer> visitaDiaria, ArrayList<ArrayList<Integer>> yaVisitados) { 
-		visitaDiaria = new ArrayList<Integer>();
-		visitaDiaria.add(0); visitaDiaria.add(6); visitaDiaria.add(5); visitaDiaria.add(22); visitaDiaria.add(0);
-		System.out.println("Busqueda local 2 Lugares a 1");
-
-		System.out.println("Valor actual " + calcularValorDiario(visitaDiaria));
-		System.out.println("Visita actual " + visitaDiaria);
-
-		ArrayList<Integer> copiaDia = new ArrayList<Integer>(visitaDiaria);
-		float valorAMejorar = calcularValorDiario(visitaDiaria);
-		
-		ArrayList<Integer> candidato = new ArrayList<Integer>();
-		float valorCandidato = valorAMejorar;
-
-		//Todas las combinaciones eliminando la salida y llegada, Hard Rock
-		for(int j = 1; j < (visitaDiaria.size() - 1); j++) {
-			for(int k = (j + 1); k < (visitaDiaria.size() - 1); k++) {
-				//ERROR EN j y k
-				copiaDia = new ArrayList<Integer>(visitaDiaria);
-
-				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(j)));
-				System.out.println("Valor actual " + calcularValorDiario(copiaDia));
-				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(k)));
-				System.out.println("Valor actual " + calcularValorDiario(copiaDia));
-				System.out.println("Hemos borrado " + visitaDiaria.get(j) + " y " + visitaDiaria.get(k));
-				System.out.println(copiaDia);
-				for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
-
-					if(yaVisitado(i, getLugaresVisitados(), visitaDiaria) == false) {
-						for(int l = 1; l < (copiaDia.size() - 1); l++) {
-							copiaDia.add(l, i);
-							if(calcularValorDiario(copiaDia) < valorAMejorar) {
-								if(valorCandidato > calcularValorDiario(copiaDia)) {
-									candidato = new ArrayList<Integer>(copiaDia);
-									valorCandidato = calcularValorDiario(copiaDia);
-									System.out.println("Posibilidad de cambio en " + i);
-								}
-							}
-							copiaDia.remove(l);
-						}
-					}
-				}
-				
-				
-			}
-		}
-		if(valorCandidato != valorAMejorar) {
-			copiaDia = candidato;
-			System.out.println("Solucion " + copiaDia);
-			System.out.println("Calculando valor " + calcularValorDiario(copiaDia));
-			
-		}
 	}
 }

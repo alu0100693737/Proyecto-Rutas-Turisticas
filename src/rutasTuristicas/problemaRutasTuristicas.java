@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Master en Ingeniería Informática por la ULL
  */
 public abstract class problemaRutasTuristicas {
-	
+
 	/** 
 	 * Número de Días de la estancia
 	 * */
@@ -69,6 +69,172 @@ public abstract class problemaRutasTuristicas {
 	 */
 	public abstract void resolverProblema();
 
+
+	/**
+	 * Método de agitación basado en buscar una mejora cambiando el orden de los lugares que se visitan.
+	 * Ej: [0, 3, 22, 0] es peor que [0, 22, 3, 0]
+	 * @param visitaDiaria			ArrayList de lugares a visitar
+	 * @return						Solución en forma ArrayList de Integer
+	 */
+	public ArrayList<Integer> busquedaLocalCambioVisita(ArrayList<Integer> visitaDiaria) { //ej: [0,6,5,22,0] -> 1.6589228     [0,5,6,22,0] -> 1.5035715  
+		System.out.println("\nBusqueda local de reemplazo");
+		//No se puede modificar el elemento 0
+		ArrayList<Integer> copiaVisitaDiaria = new ArrayList<Integer>(visitaDiaria);
+		
+		float valorActual = calcularValorDiario(visitaDiaria);
+		for(int i = 1; i < copiaVisitaDiaria.size() - 2; i++) {
+			int posAux = copiaVisitaDiaria.get(i);
+			copiaVisitaDiaria.set(i, copiaVisitaDiaria.get(i + 1));
+			copiaVisitaDiaria.set(i + 1, posAux);
+			if(valorActual > calcularValorDiario(copiaVisitaDiaria)) {
+				System.out.println("PEPE " + copiaVisitaDiaria);
+				System.out.println("Valor actual " + valorActual + " Valor nuevo " + calcularValorDiario(copiaVisitaDiaria));
+				System.out.println("Tiempo actual " + calcularTiempoEmpleado(visitaDiaria) + " Tiempo actual " + calcularTiempoEmpleado(copiaVisitaDiaria));
+				System.out.println("Kilometros actual " + calcularKilometrosEmpleado(visitaDiaria) + " Kilometros nuevo " + calcularKilometrosEmpleado(copiaVisitaDiaria));
+				System.out.println("Se ha encontrado una mejora ");
+				System.out.println("Antes: " + visitaDiaria + " Ahora: " + copiaVisitaDiaria);
+				visitaDiaria = new ArrayList<Integer>(copiaVisitaDiaria);
+			}
+		}
+		return visitaDiaria;
+	}
+
+	/**
+	 * Método Búsqueda local que busca una mejora de la solución eliminando dos elementos
+	 * e introduciendo uno entre los vecinos que mejore el valor pero que ni supere el tiempo 
+	 * limite diario ni se diferencie en más de 30min
+	 * @param visitaDiaria		Visita realizada los días anteriores
+	 * @param yaVisitados		Visitas realizadas ya durante el presente día
+	 * @return					Solución
+	 */
+	public ArrayList<Integer> busquedaLocal2a1(ArrayList<Integer> visitaDiaria, ArrayList<ArrayList<Integer>> yaVisitados) { 
+		//visitaDiaria = new ArrayList<Integer>();
+		//visitaDiaria.add(0); visitaDiaria.add(6); visitaDiaria.add(5); visitaDiaria.add(22); visitaDiaria.add(0);
+		System.out.println("\nBusqueda local 2 Lugares a 1");
+
+		System.out.println("Valor actual " + calcularValorDiario(visitaDiaria));
+		System.out.println("Tiempo actual " + calcularTiempoEmpleado(visitaDiaria));
+		System.out.println("Visita actual " + visitaDiaria);
+
+		ArrayList<Integer> copiaDia = new ArrayList<Integer>(visitaDiaria);
+		float valorAMejorar = calcularValorDiario(visitaDiaria);
+
+		ArrayList<Integer> candidato = new ArrayList<Integer>();
+		float valorCandidato = valorAMejorar;
+
+		//Todas las combinaciones eliminando la salida y llegada, Hard Rock
+		for(int j = 1; j < (visitaDiaria.size() - 1); j++) {
+			for(int k = (j + 1); k < (visitaDiaria.size() - 1); k++) {
+				//ERROR EN j y k
+				copiaDia = new ArrayList<Integer>(visitaDiaria);
+
+				//Eliminamos dos elementos
+				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(j)));
+				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(k)));
+
+				System.out.println("Hemos borrado " + visitaDiaria.get(j) + " y " + visitaDiaria.get(k) + " : " + copiaDia);
+
+				//Buscamos aquel vecino que no ha sido visitado y se comprueba si mejora el valor con respecto al actual o no
+				for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
+					if(yaVisitado(i, getLugaresVisitados(), visitaDiaria) == false) {
+
+						for(int l = 1; l < (copiaDia.size()); l++) {
+							copiaDia.add(l, i);
+							//System.out.println("Probando " + copiaDia);
+							if(calcularValorDiario(copiaDia) < valorAMejorar) {
+								//Si encontramos un mejor valor
+								if(valorCandidato > calcularValorDiario(copiaDia)) {
+									//Si el tiempo empleado no supera las horas diarias o es menor en 30min que la anterior solucion
+									if(calcularTiempoEmpleado(copiaDia) < (getNumHorasDiarias() * 60)  && (Math.abs(calcularTiempoEmpleado(copiaDia) - calcularTiempoEmpleado(visitaDiaria)) < 30)) {
+										candidato = new ArrayList<Integer>(copiaDia);
+										valorCandidato = calcularValorDiario(copiaDia);
+										System.out.println("Posibilidad de cambio en " + candidato + " con valor " + valorCandidato);
+									}
+								}
+							}
+							copiaDia.remove(l);
+						}
+					}
+				}
+			}
+		}
+
+		if(valorCandidato != valorAMejorar) {
+			copiaDia = candidato;
+			System.out.println("Solucion Mejorada de " + visitaDiaria + " a " + copiaDia);
+			System.out.println("Valor " + calcularValorDiario(copiaDia));
+			System.out.println("Tiempo empleado " + calcularTiempoEmpleado(copiaDia));
+			System.out.println("Kilometros empleados " + calcularKilometrosEmpleado(copiaDia));
+			return copiaDia;
+		} else 
+			return visitaDiaria;
+	}
+
+	/**
+	 * Método Búsqueda local que busca una mejora de la solución eliminando dos elementos
+	 * e introduciendo uno entre los vecinos que mejore el valor pero que ni supere el tiempo 
+	 * limite diario ni se diferencie en más de 30min
+	 * @param visitaDiaria		Visita realizada los días anteriores
+	 * @param yaVisitados		Visitas realizadas ya durante el presente día
+	 * @return					Solución
+	 */
+	public ArrayList<Integer> busquedaLocal1a1(ArrayList<Integer> visitaDiaria, ArrayList<ArrayList<Integer>> yaVisitados) { 
+		
+		System.out.println("\nBusqueda local 1 Lugares a 1");
+
+		System.out.println("Valor actual " + calcularValorDiario(visitaDiaria));
+		System.out.println("Tiempo actual " + calcularTiempoEmpleado(visitaDiaria));
+		System.out.println("Kilometros actual " + calcularKilometrosEmpleado(visitaDiaria));
+		System.out.println("Visita actual " + visitaDiaria);
+
+		ArrayList<Integer> copiaDia = new ArrayList<Integer>(visitaDiaria);
+		float valorAMejorar = calcularValorDiario(visitaDiaria);
+
+		ArrayList<Integer> candidato = new ArrayList<Integer>();
+		float valorCandidato = valorAMejorar;
+
+		//Todas las combinaciones eliminando la salida y llegada, Hard Rock
+		for(int j = 1; j < (visitaDiaria.size() - 1); j++) {
+				copiaDia = new ArrayList<Integer>(visitaDiaria);
+
+				//Eliminamos un elemento
+				copiaDia.remove(copiaDia.indexOf(visitaDiaria.get(j)));
+				System.out.println("Hemos borrado " + visitaDiaria.get(j) + " : " + copiaDia);
+
+				//Buscamos aquel vecino que no ha sido visitado y se comprueba si mejora el valor con respecto al actual o no
+				for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
+					if(yaVisitado(i, getLugaresVisitados(), visitaDiaria) == false) {
+						for(int l = 1; l < (copiaDia.size()); l++) {
+							copiaDia.add(l, i);
+							//System.out.println("Probando " + copiaDia);
+							if(calcularValorDiario(copiaDia) < valorAMejorar) {
+								//Si encontramos un mejor valor
+								if(valorCandidato > calcularValorDiario(copiaDia)) {
+									//Si el tiempo empleado no supera las horas diarias o es menor en 30min que la anterior solucion
+									if(calcularTiempoEmpleado(copiaDia) < (getNumHorasDiarias() * 60)  && (Math.abs(calcularTiempoEmpleado(copiaDia) - calcularTiempoEmpleado(visitaDiaria)) < 30)) {
+										candidato = new ArrayList<Integer>(copiaDia);
+										valorCandidato = calcularValorDiario(copiaDia);
+										System.out.println("Posibilidad de cambio en " + candidato + " con valor " + valorCandidato);
+									}
+								}
+							}
+							copiaDia.remove(l);
+						}
+					}
+				}
+		}
+
+		if(valorCandidato != valorAMejorar) {
+			copiaDia = candidato;
+			System.out.println("Solucion Mejorada de " + visitaDiaria + " a " + copiaDia);
+			System.out.println("Valor " + calcularValorDiario(copiaDia));
+			System.out.println("Tiempo empleado " + calcularTiempoEmpleado(copiaDia));
+			System.out.println("Kilometros empleados " + calcularKilometrosEmpleado(copiaDia));
+			return copiaDia;
+		} else 
+			return visitaDiaria;
+	}
+	
 	/**
 	 * Método que calcula el valor de visitar un Array de Sitios. 
 	 * Se considera Distancia/Valoración 
@@ -78,12 +244,13 @@ public abstract class problemaRutasTuristicas {
 	public float calcularValorDiario(ArrayList<Integer> dia) {
 		float aux = 0;
 		for(int i = 1; i < (dia.size() - 1); i++) {
+			//System.out.println("A " + getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[dia.get(i - 1)][dia.get(i)] + " B " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(dia.get(i)).getPuntuacion());
 			aux += getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[dia.get(i - 1)][dia.get(i)] /
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(dia.get(i)).getPuntuacion();
 		}
 		return aux;
 	}
-	
+
 	/**
 	 * Método que calcula el tiempo empleado en visitar un Array de Sitios.
 	 * @param dia 		Array de Lugares Visitados
@@ -92,7 +259,7 @@ public abstract class problemaRutasTuristicas {
 	 */
 	public int calcularTiempoEmpleado(ArrayList<Integer> dia) {
 		int tiempoDiario = 0; 
-		System.out.println("Lugares : " + dia);
+		//System.out.println("Lugares : " + dia);
 		for(int i = 1; i < (dia.size() - 1); i++) {
 			tiempoDiario += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[dia.get(i - 1)][dia.get(i)];
 			tiempoDiario += getLugaresTuristicosDisponibles().getLugaresTuristicos().get(dia.get(i)).getDuracion() * 60;
@@ -100,7 +267,7 @@ public abstract class problemaRutasTuristicas {
 		tiempoDiario += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[dia.get(dia.size() - 2)][0];
 		return tiempoDiario;
 	}
-	
+
 	/**
 	 * Método que calcula los kilómetros empleados para visitar el conjunto de lugares un Array de Sitios
 	 * @param dia		Array de Lugares Visitados
@@ -128,11 +295,11 @@ public abstract class problemaRutasTuristicas {
 		for(int l = 0; l < diasAnteriores.size(); l++) 
 			if(diasAnteriores.get(l).contains(lugar)) 
 				yaVisitado = true;
-		if(getSolucionDiaria().contains(lugar)) 
+		if(diaActual.contains(lugar)) 
 			yaVisitado = true;
 		return yaVisitado;
 	}
-	
+
 	/**
 	 * Muestra todo el itinerario del viaje, resultado de la resolución del problema
 	 * y el valor total de la solución.
@@ -159,17 +326,19 @@ public abstract class problemaRutasTuristicas {
 	 * @param itinerario 		Lugares del itinerario
 	 */
 	public void mostrarConsultaItinerarioDia(ArrayList<Integer> itinerario) {
+
 		for(int i = 0; i < itinerario.size(); i++) {
 			getLugaresTuristicosDisponibles().getLugaresTuristicos().get(itinerario.get(i)).mostrarLugar();
 		}
-		
+
+		System.out.println("Lugares: " + itinerario);
 		System.out.println("Tiempo acumulado " + calcularTiempoEmpleado(getSolucionDiaria()) + "min");
 		System.out.println("Kilometros diarios " + calcularKilometrosEmpleado(getSolucionDiaria()) + " km");
 		System.out.println("Valor Acumulado diario: " + calcularValorDiario(getSolucionDiaria()));
 	}
 
 	///GETS
-	
+
 	/**
 	 * Método que devuelve el numero de días del itinerario de viaje
 	 * @return int numero de días

@@ -2,6 +2,7 @@ package rutasTuristicas;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Clase rutaTuristicaGreedyPonderado
@@ -49,6 +50,10 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 		System.out.println("Algoritmo Greedy Ponderado KM/Valoracion");
 		System.out.println("Tenemos " + getNumDiasEstancia() + " dias de estancia con " + getNumHorasDiarias() + " horas de visita a la isla.");
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
+		
+		System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
+		Scanner n = new Scanner(System.in);
+		boolean busquedalocal = n.nextBoolean();
 		
 		//Para el conjunto de dias
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
@@ -117,6 +122,27 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 			}
 			
 			getSolucionDiaria().add(0);
+			
+			//¿Mejora por busqueda local?
+			System.out.println("Aplicando Mejora basada en agitación sobre la solución ");
+			if(getSolucionDiaria() != busquedaLocalCambioVisita(getSolucionDiaria())) {
+				System.out.println("Cambio en la solucion, imprimimos de nuevo el itinerario: ");
+				for(int i = 0; i < getSolucionDiaria().size(); i++) 
+					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
+			}
+			if(busquedalocal) {
+				//Aplicar busqueda local
+				System.out.println("\nAplicando busqueda local 2 a 1");
+				while(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()) != getSolucionDiaria()) {
+					solucionDiaria = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
+				}
+			}
+
+			
+			
+			
+			
+			
 			getLugaresVisitados().add(getSolucionDiaria());
 
 			System.out.println("Valor: " + calcularValorDiario(getSolucionDiaria()));

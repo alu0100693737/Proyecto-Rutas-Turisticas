@@ -1,26 +1,26 @@
 56
 Hotel Hard Rock,Hotel,5,-1
-Loro Parque,Parque Tem·tico,10,3
-Siam Park,Parque Tem·tico, 10, 6
+Loro Parque,Parque Tem√°tico,10,3
+Siam Park,Parque Tem√°tico, 10, 6
 Volcan el Teide,Naturaleza,100, 4.5
 Cueva del Viento,Naturaleza,8,2.5
-Tenerife Snorkelling and kayaking,Acu·tico,8,3
-Paradise Divers,Acu·tico,7,3
-Xplore Tenerife,Acu·tico,7,3
-Lj Diving,Acu·tico,8,3
-Centro de Buceo Aqua-Marina,Acu·tico,8,3
-West Tenerife,Acu·tico,6,2
+Tenerife Snorkelling and kayaking,Acu√°tico,8,3
+Paradise Divers,Acu√°tico,7,3
+Xplore Tenerife,Acu√°tico,7,3
+Lj Diving,Acu√°tico,8,3
+Centro de Buceo Aqua-Marina,Acu√°tico,8,3
+West Tenerife,Acu√°tico,6,2
 Barranco de Masca,Naturaleza,7,4
 ARTlandya,Cultura y monumentos,5,1
-Las montaÒas de Anaga,Naturaleza,8,3.5
+Las monta√±as de Anaga,Naturaleza,8,3.5
 Playa del Duque,Playa,8,3
 Playa de Benijo,Playa,4,3
 Costa Martianez,Playa,7,3
-Centro HistÛrico de San CristÛbal de la Laguna,Cultura y monumentos,7,2
-Monkey Park,Parque Tem·tico,6,3
-Piscinas Naturales El CaletÛn,Playa,8,3
-JardÌn el Bot·nico,Naturaleza,7,1
-El MÈdano,Playa,8,3
+Centro Hist√≥rico de San Crist√≥bal de la Laguna,Cultura y monumentos,7,2
+Monkey Park,Parque Tem√°tico,6,3
+Piscinas Naturales El Calet√≥n,Playa,8,3
+Jard√≠n el Bot√°nico,Naturaleza,7,1
+El M√©dano,Playa,8,3
 Barranco del Infierno,Naturaleza,8,3
 Crystals Palace,Nocturno,6,3
 Coco Beach,Nocturno,8,3
@@ -28,30 +28,30 @@ Achaman DiscoPub,Nocturno,7,3
 The Theatre Cabaret Bar,Nocturno,7,3
 Magnums Bar,Nocturno,6,3
 Reserva Ambiental San Blas,Naturaleza,4,3
-Parque Las ¡guilas,Parque Tem·tico,5,3
+Parque Las √Åguilas,Parque Tem√°tico,5,3
 Museo de la Naturaleza y el Hombre,Cultura y monumentos,6,1
 TEA Tenerife Espacio de las Artes,Cultura y monumentos,6,1
 Observatorio del Teide,Naturaleza,8,1
-Plaza de EspaÒa,Cultura y monumentos,7,0.5
+Plaza de Espa√±a,Cultura y monumentos,7,0.5
 Auditorio de Tenerife,Cultura y monumentos,7,1
-Pir·mides de G¸imar,Cultura y monumentos,3,1
-Museo HistÛrico Militar de Canarias,Cultura y Monumentos,3,1
+Pir√°mides de G√ºimar,Cultura y monumentos,3,1
+Museo Hist√≥rico Militar de Canarias,Cultura y Monumentos,3,1
 Bubble Soccer,Actividades,2,2
-MontaÒa Roja,Playa,6,3
+Monta√±a Roja,Playa,6,3
 Kangaroo Tandem Tenerife,Actividades,7,1.5
 Tenerfly Parapente,Actividades,8,2
 Airsports Tenerife,Actividades,7,2
 Enminube Parapente,Actividades,6,2
 Air Canaries,Actividades,7,2
 Blanco Bar,Nocturno,7,2
-De tapas y CaÒas,Nocturno,8,2
+De tapas y Ca√±as,Nocturno,8,2
 Sounds of Cream,Nocturno,7,2
 Parque del Drago,Cultura y Monumentos,8,0.5
 Restaurante Sagrario,Restaurante,8,1
 Restaurante San Sebastian 57,Restaurante,8,1
 Aiko Sushi,Restaurante,4,1
 Restaurante Solana,Restaurante,6,1
-Restaurante BodegÛn Vijariego,Restaurante,7,1
+Restaurante Bodeg√≥n Vijariego,Restaurante,7,1
 La posada del pez,Restaurante,6,1
 Bimba&Club,Restaurante,7,2
 Restaurante Kazan,Restaurante,5,1
