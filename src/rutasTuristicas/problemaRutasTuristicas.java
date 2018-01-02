@@ -1,21 +1,20 @@
-/**
- * Clase ProblemaRutasTuristicas para la resolución de problemas
- * de asignacion de rutas turisticas especificando el 
- * numero de dias y las horas diarias maximas de la ruta
- * @author Ivan Garcia Campos   
- * @email alu0100693737@ull.edu.es
- * @version 1.0, 01/01/2018
- * @see asignatura "Sistemas Inteligentes e Interacción Persona Computador"
- * @see Master en Ingeniería Informática por la ULL
- */
-
 package rutasTuristicas;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Clase ProblemaRutasTuristicas para la resolución de problemas
+ * de asignación de rutas turísticas especificando el 
+ * número de días y las horas diarias máximas de la ruta
+ * @author Ivan Garcia Campos   alu0100693737@ull.edu.es
+ * @version 1.0, 01/01/2018
+ * Asignatura "Sistemas Inteligentes e Interacción Persona Computador"
+ * Master en Ingeniería Informática por la ULL
+ */
 public abstract class problemaRutasTuristicas {
+	
 	/** 
 	 * Número de Días de la estancia
 	 * */
@@ -59,13 +58,13 @@ public abstract class problemaRutasTuristicas {
 	/** 
 	 * Método abstracto para la resolución de problemas
 	 * Se implementarán:
-	 * 		Algoritmo Aleatorio	
-	 * 		Algoritmo Greedy	
-	 * 		Algoritmo GRASP
-	 * 		Busqueda Local
-	 * 		Multiarranque	
-	 * 		Recocido Simulado
-	 * 		Busqueda Tabú 
+	 * 		Algoritmo Aleatorio,
+	 * 		Algoritmo Greedy,	
+	 * 		Algoritmo GRASP,
+	 * 		Busqueda Local,
+	 * 		Multiarranque,	
+	 * 		Recocido Simulado,
+	 * 		Busqueda Tabú y 
 	 * 		BVNS
 	 */
 	public abstract void resolverProblema();
@@ -84,6 +83,7 @@ public abstract class problemaRutasTuristicas {
 		}
 		return aux;
 	}
+	
 	/**
 	 * Método que calcula el tiempo empleado en visitar un Array de Sitios.
 	 * @param dia 		Array de Lugares Visitados
@@ -100,8 +100,9 @@ public abstract class problemaRutasTuristicas {
 		tiempoDiario += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[dia.get(dia.size() - 2)][0];
 		return tiempoDiario;
 	}
+	
 	/**
-	 * Método que calcula los kilometros empleados para visitar el conjunto de lugares un Array de Sitios
+	 * Método que calcula los kilómetros empleados para visitar el conjunto de lugares un Array de Sitios
 	 * @param dia		Array de Lugares Visitados
 	 * @return			float kilometros empleados
 	 */
@@ -167,6 +168,8 @@ public abstract class problemaRutasTuristicas {
 		System.out.println("Valor Acumulado diario: " + calcularValorDiario(getSolucionDiaria()));
 	}
 
+	///GETS
+	
 	/**
 	 * Método que devuelve el numero de días del itinerario de viaje
 	 * @return int numero de días

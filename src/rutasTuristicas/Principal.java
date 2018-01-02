@@ -4,10 +4,25 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Clase Principal para la prueba del Proyecto
+ * Contiene un menu para probar cada una de las heurísticas implementadas:
+ * 		Algoritmo Aleatorio,
+ *   	Algoritmo Greedy,
+ * 		Algoritmo GRASP,
+ * 		Búsqueda Local,
+ * 		Recocido Simulado,
+ * 		Busqueda Tabú,	
+ * 		MultiArranque y 
+ * 		BVNS
+ * @author Ivan Garcia Campos   alu0100693737@ull.edu.es
+ * @version 1.0, 01/01/2018
+ * Asignatura "Sistemas Inteligentes e Interacción Persona Computador"
+ * Master en Ingeniería Informática por la ULL
+ */
 public class Principal {
+	
 	public static void main(String[] args) throws NumberFormatException, FileNotFoundException, IOException{
-
-
 		Scanner sn = new Scanner(System.in);
 		boolean salir = false;
 		int opcion; //Guardaremos la opcion del usuario
@@ -47,7 +62,7 @@ public class Principal {
 				System.out.println("Gracias por utilizar este Gestor de Rutas Turisticas");
 				break;
 			default:
-				System.out.println("Solo n�meros entre 1 y 4");
+				System.out.println("Solo números entre 1 y 6");
 			}
 		}
 	}

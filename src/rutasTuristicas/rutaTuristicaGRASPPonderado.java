@@ -5,15 +5,46 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//menor km/valoracion ej: 90/4 > 150/10
-
-
-//Algoritmos Greedy, Ponderado. Menor Tiempo en llegar, sin considerar tiempo en la actividad. Distancia / (Valoracion * factorPonderado) 
+/**
+ * Clase rutaTuristicaGRASPPonderado
+ * Realiza un itinerario de viaje eligiendo para cada día, UNO DE LOS MEJORES LUGARES
+ * de forma iterativa teniendo en cuenta la distancia, la valoración del lugar y las horas máximas permitidas
+ * min(Distancia / Valoracion)    ej: 90/2 es mayor que 150/5
+ * 
+ * Contiene además 2 búsquedas locales distintas:
+ * 
+ *  Cambio en el orden de visita de la ruta (método de alteración)
+ *  Busqueda Local Eliminar 2, añadir 1 vecino
+ *  
+ * @author Ivan Garcia Campos   alu0100693737@ull.edu.es
+ * @version 1.0, 01/01/2018
+ * @see problemaRutasTuristicas
+ * Asignatura "Sistemas Inteligentes e Interacción Persona Computador"
+ * Master en Ingeniería Informática por la ULL
+ */
 public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {  
 
+	/** 
+	 * Número de candidatos para realizar la elección del próximo lugar
+	 */
 	private final int LRC = 3;
+	
+	/**
+	 * Mejores lugares candidatos, se almacena en un ArrayList de tipo Point2D con valor,posición (float,int)
+	 */
 	private ArrayList<Point2D.Float> lugaresCandidatos; //valor, posicion (float, int)
 
+
+	/**
+	 * Constructor de la clase rutaTuristicaGRASPPonderado
+	 * @param ficheroLugares			Fichero con la descripcion de los lugares
+	 * @param ficheroMatrizDistancias	Fichero con las distancias entre todos los lugares
+	 * @param ficheroMatrizTiempos		Fichero con los tiempos para llegar de un lugar a otro
+	 * @param numDias					Número de días del itinerario
+	 * @param numHorasDia				Número de horas diarias del itinerario
+	 * @throws FileNotFoundException	Error, fichero no valido
+	 * @throws IOException				Error de entrada/salida
+	 */
 	public rutaTuristicaGRASPPonderado(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 
@@ -21,6 +52,16 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 	}
 
 	@Override
+	/**
+	 * Metodo heredado de problemaRutaTuristica que resuelve el problema de 
+	 * Gestor de Rutas Turísticas de forma GRASP.
+	 * En cada iteración se eligen los LRC mejores candidatos entre los lugares que puedan visitarse. Nunca se repite un lugar
+	 * ya visitado y se tiene en cuenta el tiempo máximo de itinerario por dia:
+	 * Se eligirá aleatoriamente uno de los lugares candidatos.
+	 * 
+	 * Para el calculo de mejores candidatos, se tiene en cuenta cuánto se tarda en llegar de un sitio a otro y la duración de
+	 * la actividad. Debe llegar al punto de partida antes de que se cumpla el numHoras Máximo
+	 */
 	public void resolverProblema() {
 
 		//Introducir factor ponderado
@@ -113,15 +154,15 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 
 					System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][(int)getLugaresCandidatos().get(elegido).getY()] + " y estaremos en la actividad " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get((int)getLugaresCandidatos().get(elegido).getY()).getDuracion() * 60);
 
-					//A�adimos el tiempo que tarda en llegar al sitio
+					//A�adimos el tiempo que tarda en llegar al sitio
 					tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][(int)getLugaresCandidatos().get(elegido).getY()];
-					//A�adimos el tiempo que estar� en el sitio
+					//A�adimos el tiempo que estar� en el sitio
 					tiempoAcumulado += getLugaresTuristicosDisponibles().getLugaresTuristicos().get((int)getLugaresCandidatos().get(elegido).getY()).getDuracion() * 60;
 
 					System.out.println("Tiempo acumulado " + tiempoAcumulado + " min");
 					System.out.println("Valor: " + getLugaresCandidatos().get(elegido).getX());
 					
-					//A�adimos el lugar
+					//A�adimos el lugar
 					getSolucionDiaria().add((int)getLugaresCandidatos().get(elegido).getY());
 				}
 			}

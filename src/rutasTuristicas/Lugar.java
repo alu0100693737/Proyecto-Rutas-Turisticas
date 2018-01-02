@@ -1,30 +1,37 @@
-/**
- * Clase Lugar que almacena informaci髇 relevante
- * @author Ivan Garcia Campos   
- * @email alu0100693737@ull.edu.es
- * @version 1.0, 01/01/2018
- * @see asignatura "Sistemas Inteligentes e Interacci髇 Persona Computador"
- * @see Master en Ingenier韆 Inform醫ica por la ULL
- */
-
 package rutasTuristicas;
 
+/**
+ * Clase Lugar que almacena informaci贸n relevante
+ * @author Ivan Garcia Campos   alu0100693737@ull.edu.es
+ * @version 1.0, 01/01/2018
+ * Asignatura "Sistemas Inteligentes e Interacci贸n Persona Computador"
+ * Master en Ingenier铆a Inform谩tica por la ULL
+ */
 public class Lugar {
-	/** Nombre del lugar */
+	
+	/** 
+	 * Nombre del lugar 
+	 * */
 	private String nombreLugar;
-	/**Tem醫ica del lugar: Playa, Cultura y monumentos, Parque Tem醫ico, etc*/
+	/**
+	 * Tem谩tica del lugar: Playa, Cultura y monumentos, Parque Tem谩tico, etc
+	 * */
 	private String tematica;
-	/**Puntuacion del 1 al 10*/
+	/**
+	 * Puntuaci贸n del 1 al 10
+	 * */
 	private float puntuacion;
-	/**Duracion de la actividad en horas*/
+	/**
+	 * Duraci贸n de la actividad en horas
+	 * */
 	private float duracion;
 	
 	/**
 	 * Constructor de la clase Lugar
-	 * @param nombre
-	 * @param tema
-	 * @param puntua
-	 * @param duracin
+	 * @param nombre 		Nombre del lugar
+	 * @param tema			Tem谩tica del lugar
+	 * @param puntua		Puntuaci贸n del lugar
+	 * @param duracin		Duraci贸n de visitar el lugar
 	 */
 	public Lugar(String nombre, String tema, float puntua, float duracin) {
 		nombreLugar = nombre;
@@ -34,15 +41,17 @@ public class Lugar {
 	}
 	
 	/**
-	 * M閠odo para mostrar los atributos de la clase Lugar
+	 * M茅todo para mostrar los atributos de la clase Lugar
 	 */
 	public void mostrarLugar() {
 		System.out.println("Lugar: " + getNombreLugar());
 		System.out.println("Tematica: " + getTematica() + ". Puntuacion: " + getPuntuacion() + ". Duracion: " + getDuracion() + "\n");
 	}
 	
+	///GETS
+	
 	/**
-	 * M閠odo que devuelve el Nombre del Lugar
+	 * M茅todo que devuelve el Nombre del Lugar
 	 * @return String
 	 */
 	public String getNombreLugar() {
@@ -50,7 +59,7 @@ public class Lugar {
 	}
 	
 	/**
-	 * M閠odo que devuelve la Tematica del Lugar
+	 * M茅todo que devuelve la Tem谩tica del Lugar
 	 * @return String
 	 */
 	public String getTematica() {
@@ -58,7 +67,7 @@ public class Lugar {
 	}
 	
 	/**
-	 * M閠odo que devuelve la Puntuaci髇 del Lugar
+	 * M茅todo que devuelve la Puntuaci贸n del Lugar
 	 * @return float (0-10)
 	 */
 	public float getPuntuacion() {
@@ -66,7 +75,7 @@ public class Lugar {
 	}
 	
 	/**
-	 * M閠odo que devuelve la Duraci髇 de la visita al Lugar
+	 * M茅todo que devuelve la Duraci贸n de la visita al Lugar
 	 * @return float en horas
 	 */
 	public float getDuracion() {

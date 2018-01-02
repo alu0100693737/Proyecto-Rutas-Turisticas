@@ -1,15 +1,31 @@
 package rutasTuristicas;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//menor km/valoracion ej: 90/2 > 150/5
-
-
-//Algoritmos Greedy, Ponderado. Menor Tiempo en llegar, sin considerar tiempo en la actividad. Distancia / (Valoracion * factorPonderado) 
+/**
+ * Clase rutaTuristicaGreedyPonderado
+ * Realiza un itinerario de viaje eligiendo para cada día, EL MEJOR LUGAR
+ * de forma iterativa teniendo en cuenta la distancia, la valoración del lugar y las horas máximas permitidas
+ * min(Distancia / Valoracion)    ej: 90/2 es mayor que 150/5
+ * @author Ivan Garcia Campos   alu0100693737@ull.edu.es
+ * @version 1.0, 01/01/2018
+ * @see problemaRutasTuristicas
+ * Asignatura "Sistemas Inteligentes e Interacción Persona Computador"
+ * Master en Ingeniería Informática por la ULL
+ */
 public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {  
 	
+	/**
+	 * Constructor de la clase rutaTuristicaGreedyPonderado
+	 * @param ficheroLugares			Fichero con la descripcion de los lugares
+	 * @param ficheroMatrizDistancias	Fichero con las distancias entre todos los lugares
+	 * @param ficheroMatrizTiempos		Fichero con los tiempos para llegar de un lugar a otro
+	 * @param numDias					Número de días del itinerario
+	 * @param numHorasDia				Número de horas diarias del itinerario
+	 * @throws FileNotFoundException	Error, fichero no valido
+	 * @throws IOException				Error de entrada/salida
+	 */
 	public rutaTuristicaGreedyPonderado(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 
@@ -17,6 +33,14 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 	}
 
 	@Override
+	/**
+	 * Metodo heredado de problemaRutaTuristica que resuelve el problema de 
+	 * Gestor de Rutas Turísticas de forma Greedy.
+	 * En cada iteración se elige el mejor candidato entre los lugares que puedan visitarse. Nunca se repite un lugar
+	 * ya visitado y se tiene en cuenta el tiempo máximo de itinerario por dia:
+	 * Para su calculo, se tiene en cuenta cuánto se tarda en llegar de un sitio a otro y la duración de
+	 * la actividad. Debe llegar al punto de partida antes de que se cumpla el numHoras Máximo
+	 */
 	public void resolverProblema() {
 
 		//Introducir factor ponderado
@@ -81,13 +105,13 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 					
 					System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][posicionEncontrada] + " y estaremos en la actividad " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(posicionEncontrada).getDuracion() * 60);
 					
-					//A�adimos el tiempo que tarda en llegar al sitio y la duracion de la actividad
+					//Añadimos el tiempo que tarda en llegar al sitio y la duracion de la actividad
 					tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][posicionEncontrada] + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(posicionEncontrada).getDuracion() * 60;
 
 					System.out.println("Tiempo acumulado " + tiempoAcumulado + " min");
 					System.out.println("Valor: " + valor);
 					
-					//A�adimos el lugar
+					//Añadimos el lugar
 					getSolucionDiaria().add(posicionEncontrada);
 				}
 			}
