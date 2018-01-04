@@ -29,8 +29,6 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 	 */
 	public rutaTuristicaGreedyPonderado(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
-
-		resolverProblema();
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 	 * Para su calculo, se tiene en cuenta cuánto se tarda en llegar de un sitio a otro y la duración de
 	 * la actividad. Debe llegar al punto de partida antes de que se cumpla el numHoras Máximo
 	 */
-	public void resolverProblema() {
+	public void resolverProblema(boolean MultiArranque) {
 
 		//Introducir factor ponderado
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
@@ -51,9 +49,20 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 		System.out.println("Tenemos " + getNumDiasEstancia() + " dias de estancia con " + getNumHorasDiarias() + " horas de visita a la isla.");
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
 		
-		System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
-		Scanner n = new Scanner(System.in);
-		boolean busquedalocal = n.nextBoolean();
+		boolean busquedalocal2a1, busquedalocal1a1;
+		if(MultiArranque == false ) {
+			System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
+			Scanner n = new Scanner(System.in);
+			busquedalocal2a1 = n.nextBoolean();
+
+			System.out.println("¿Desea aplicar busqueda local 1 a 1?, true, false");
+			busquedalocal1a1 = n.nextBoolean();
+		} else {
+			busquedalocal2a1 = false;
+			busquedalocal1a1 = false;
+		}
+
+
 		
 		//Para el conjunto de dias
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
@@ -123,6 +132,12 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 			
 			getSolucionDiaria().add(0);
 			
+			System.out.println("Recorrido: " + getSolucionDiaria());
+			System.out.println("Valor " + calcularValorDiario(getSolucionDiaria()));
+			System.out.println("Tiempo: " + calcularTiempoEmpleado(getSolucionDiaria()) + " min");
+			System.out.println(calcularKilometrosEmpleado(getSolucionDiaria()) + " km");
+			
+			
 			//¿Mejora por busqueda local?
 			System.out.println("Aplicando Mejora basada en agitación sobre la solución ");
 			if(getSolucionDiaria() != busquedaLocalCambioVisita(getSolucionDiaria())) {
@@ -130,17 +145,35 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 				for(int i = 0; i < getSolucionDiaria().size(); i++) 
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
 			}
-			if(busquedalocal) {
+			
+			if(busquedalocal2a1) {
 				//Aplicar busqueda local
 				System.out.println("\nAplicando busqueda local 2 a 1");
-				while(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()) != getSolucionDiaria()) {
-					solucionDiaria = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
+				boolean mejora = true;
+				while(mejora) {
+					ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
+					if(!busqueda.equals(getSolucionDiaria())) {
+						solucionDiaria = new ArrayList<Integer>(busqueda);
+					} else {
+						mejora = false;
+					}
 				}
+				System.out.println("\nTerminada la busqueda 2 a 1");
 			}
 
-			
-			
-			
+			if(busquedalocal1a1) {
+				System.out.println("\nAplicando busqueda local 1 a 1");
+
+				boolean mejora = true;
+				while(mejora) {
+					ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocal1a1(getSolucionDiaria(), getLugaresVisitados()));
+					if(!busqueda.equals(getSolucionDiaria())) {
+						solucionDiaria = new ArrayList<Integer>(busqueda);
+					} else {
+						mejora = false;
+					}
+				}
+			}
 			
 			
 			getLugaresVisitados().add(getSolucionDiaria());

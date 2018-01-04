@@ -67,7 +67,7 @@ public abstract class problemaRutasTuristicas {
 	 * 		Busqueda Tabú y 
 	 * 		BVNS
 	 */
-	public abstract void resolverProblema();
+	public abstract void resolverProblema(boolean MultiArranque); //Se usa parametro por si se desea multiarranque, sin usar busquedas locales
 
 
 	/**
@@ -77,23 +77,24 @@ public abstract class problemaRutasTuristicas {
 	 * @return						Solución en forma ArrayList de Integer
 	 */
 	public ArrayList<Integer> busquedaLocalCambioVisita(ArrayList<Integer> visitaDiaria) { //ej: [0,6,5,22,0] -> 1.6589228     [0,5,6,22,0] -> 1.5035715  
-		System.out.println("\nBusqueda local de reemplazo");
+		System.out.println("Busqueda local de reemplazo");
 		//No se puede modificar el elemento 0
 		ArrayList<Integer> copiaVisitaDiaria = new ArrayList<Integer>(visitaDiaria);
-		
+
 		float valorActual = calcularValorDiario(visitaDiaria);
 		for(int i = 1; i < copiaVisitaDiaria.size() - 2; i++) {
 			int posAux = copiaVisitaDiaria.get(i);
 			copiaVisitaDiaria.set(i, copiaVisitaDiaria.get(i + 1));
 			copiaVisitaDiaria.set(i + 1, posAux);
 			if(valorActual > calcularValorDiario(copiaVisitaDiaria)) {
-				System.out.println("PEPE " + copiaVisitaDiaria);
+				//System.out.println("PEPE " + copiaVisitaDiaria);
 				System.out.println("Valor actual " + valorActual + " Valor nuevo " + calcularValorDiario(copiaVisitaDiaria));
 				System.out.println("Tiempo actual " + calcularTiempoEmpleado(visitaDiaria) + " Tiempo actual " + calcularTiempoEmpleado(copiaVisitaDiaria));
 				System.out.println("Kilometros actual " + calcularKilometrosEmpleado(visitaDiaria) + " Kilometros nuevo " + calcularKilometrosEmpleado(copiaVisitaDiaria));
 				System.out.println("Se ha encontrado una mejora ");
 				System.out.println("Antes: " + visitaDiaria + " Ahora: " + copiaVisitaDiaria);
 				visitaDiaria = new ArrayList<Integer>(copiaVisitaDiaria);
+				valorActual = calcularValorDiario(copiaVisitaDiaria); //Actualizamos el valor, mejora
 			}
 		}
 		return visitaDiaria;

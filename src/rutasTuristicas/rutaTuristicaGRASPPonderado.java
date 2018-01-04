@@ -48,8 +48,6 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 	 */
 	public rutaTuristicaGRASPPonderado(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
-
-		resolverProblema();
 	}
 
 	@Override
@@ -63,11 +61,20 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 	 * Para el calculo de mejores candidatos, se tiene en cuenta cuánto se tarda en llegar de un sitio a otro y la duración de
 	 * la actividad. Debe llegar al punto de partida antes de que se cumpla el numHoras Máximo
 	 */
-	public void resolverProblema() {
+	public void resolverProblema(boolean MultiArranque) {
 
-		System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
-		Scanner n = new Scanner(System.in);
-		boolean busquedalocal = n.nextBoolean();
+		boolean busquedalocal2a1, busquedalocal1a1;
+		if(MultiArranque == false ) {
+			System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
+			Scanner n = new Scanner(System.in);
+			busquedalocal2a1 = n.nextBoolean();
+
+			System.out.println("¿Desea aplicar busqueda local 1 a 1?, true, false");
+			busquedalocal1a1 = n.nextBoolean();
+		} else {
+			busquedalocal2a1 = false;
+			busquedalocal1a1 = false;
+		}
 
 		//Introducir factor ponderado
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
@@ -182,11 +189,33 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 				for(int i = 0; i < getSolucionDiaria().size(); i++) 
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
 			}
-			if(busquedalocal) {
+			
+			if(busquedalocal2a1) {
 				//Aplicar busqueda local
 				System.out.println("\nAplicando busqueda local 2 a 1");
-				while(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()) != getSolucionDiaria()) {
-					solucionDiaria = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
+				boolean mejora = true;
+				while(mejora) {
+					ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
+					if(!busqueda.equals(getSolucionDiaria())) {
+						solucionDiaria = new ArrayList<Integer>(busqueda);
+					} else {
+						mejora = false;
+					}
+				}
+				System.out.println("\nTerminada la busqueda 2 a 1");
+			}
+
+			if(busquedalocal1a1) {
+				System.out.println("\nAplicando busqueda local 1 a 1");
+
+				boolean mejora = true;
+				while(mejora) {
+					ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocal1a1(getSolucionDiaria(), getLugaresVisitados()));
+					if(!busqueda.equals(getSolucionDiaria())) {
+						solucionDiaria = new ArrayList<Integer>(busqueda);
+					} else {
+						mejora = false;
+					}
 				}
 			}
 

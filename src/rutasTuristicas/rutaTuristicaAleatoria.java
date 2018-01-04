@@ -30,7 +30,6 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 	 */
 	public rutaTuristicaAleatoria(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
-		resolverProblema();
 	}
 
 	@Override
@@ -40,7 +39,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 	 * En cada iteración se elige uno de forma aleatoria si no supera el tiempo máximo diario teniendo en cuenta
 	 * las inserciones anteriores
 	 */
-	public void resolverProblema() {
+	public void resolverProblema(boolean MultiArranque) {
 
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
 
@@ -49,12 +48,19 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
 		System.out.println("\n");
 
-		System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
-		Scanner n = new Scanner(System.in);
-		boolean busquedalocal2a1 = n.nextBoolean();
-		
-		System.out.println("¿Desea aplicar busqueda local 1 a 1?, true, false");
-		boolean busquedalocal1a1 = n.nextBoolean();
+		boolean busquedalocal2a1, busquedalocal1a1;
+		if(MultiArranque == false ) {
+			System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
+			Scanner n = new Scanner(System.in);
+			busquedalocal2a1 = n.nextBoolean();
+
+			System.out.println("¿Desea aplicar busqueda local 1 a 1?, true, false");
+			busquedalocal1a1 = n.nextBoolean();
+		} else {
+			//Estrategia MultiArranque
+			busquedalocal2a1 = true;
+			busquedalocal1a1 = false;
+		}
 
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 			solucionDiaria = new ArrayList<Integer>();
@@ -101,7 +107,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 			System.out.println("Tiempo actual " + calcularTiempoEmpleado(getSolucionDiaria()));
 			System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));
 			System.out.println("Visita actual " + getSolucionDiaria());
-
+			
 			//Busqueda local, Mejora?
 			System.out.println("\nAplicando Mejora basada en agitación sobre la solución ");
 			ArrayList<Integer> busquedaCambio = new ArrayList<Integer>(busquedaLocalCambioVisita(getSolucionDiaria()));
@@ -110,7 +116,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 				solucionDiaria = new ArrayList<Integer>(busquedaCambio);
 				for(int i = 0; i < getSolucionDiaria().size(); i++) 
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
-				
+
 			}
 			if(busquedalocal2a1) {
 				//Aplicar busqueda local
