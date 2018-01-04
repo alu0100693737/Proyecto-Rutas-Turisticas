@@ -3,33 +3,33 @@ package rutasTuristicas;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
- * Clase rutaTuristicaAleatoria
+ * Clase rutaTuristicaBVNS (Basic VNS)
  * Realiza un itinerario de viaje teniendo en cuenta el número de días y las horas máximas
  * diarias de viaje. 
- * Elige aleatoriamente rutas de forma iterativa
+ * Se parte de una solución aleatoria y se intenta mejorar realizando una busqueda local con cambio en la estructura
+ * de vecindad.
+ * 
  * @author Ivan Garcia Campos   alu0100693737@ull.edu.es
  * @version 1.0, 01/01/2018
  * @see problemaRutasTuristicas
  * Asignatura "Sistemas Inteligentes e Interacción Persona Computador"
  * Master en Ingeniería Informática por la ULL
  */
-public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
+public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 
+	//Cambio de estructura hasta 4 elementos, en el entorno.
 	/**
-	 * Constructor de la clase rutaTuristica Aleatoria
-	 * @param ficheroLugares			Fichero con la descripcion de los lugares
-	 * @param ficheroMatrizDistancias	Fichero con las distancias entre todos los lugares
-	 * @param ficheroMatrizTiempos		Fichero con los tiempos para llegar de un lugar a otro
-	 * @param numDias					Número de días del itinerario
-	 * @param numHorasDia				Número de horas diarias del itinerario
-	 * @throws FileNotFoundException	Error, fichero no valido
-	 * @throws IOException				Error de entrada/salida
+	 * Máximo cambio en el entorno permitido, se empezará por k = 1. 
 	 */
-	public rutaTuristicaAleatoria(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
+	private final static int K = 4;
+
+	public rutaTuristicaBVNS(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
+
+		resolverProblema(true);		
+
 	}
 
 	@Override
@@ -37,9 +37,15 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 	 * Metodo heredado de problemaRutaTuristica que resuelve el problema de 
 	 * Gestor de Rutas Turísticas de forma aleatoria teniendo en cuenta las restricciones
 	 * En cada iteración se elige uno de forma aleatoria si no supera el tiempo máximo diario teniendo en cuenta
-	 * las inserciones anteriores
+	 * las inserciones anteriores.
+	 * 
+	 * Hecho esto, se realiza una estrategia BVNS para optimizar la ruta elegida. Para ello se permitirán elementos de cambio
+	 * en la solución con elementos de la vecindad de la forma, eliminar un elemento e introducir uno de la vecindad.
+	 * 
+	 * Si se genera una solución mejor, se repite el proceso, en el caso de que no se encuentre una solución válida, 
+	 * se aumenta la estructura de analisis hasta un máximo de K = 4.
 	 */
-	public void resolverProblema(boolean Estrategia) { //Estrategia es multiArranque o BVNS
+	public void resolverProblema(boolean Estrategia) {
 
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
 
@@ -48,21 +54,9 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
 		System.out.println("\n");
 
-		boolean busquedalocal2a1, busquedalocal1a1;
-		if(Estrategia == false ) {
-			System.out.println("¿Desea aplicar busqueda local 2 a 1?, true, false");
-			Scanner n = new Scanner(System.in);
-			busquedalocal2a1 = n.nextBoolean();
-
-			System.out.println("¿Desea aplicar busqueda local 1 a 1?, true, false");
-			busquedalocal1a1 = n.nextBoolean();
-		} else {
-			//Estrategia MultiArranque
-			busquedalocal2a1 = true;
-			busquedalocal1a1 = false;
-		}
-
+		//Para el conjunto de días
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
+			
 			solucionDiaria = new ArrayList<Integer>();
 			int minutosAcumulados = 0;
 			//Maximo de comparaciones para decidir que no se puede introducir ningun sitio mas sin sobrepasar la restriccion de tiempo
@@ -107,6 +101,17 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 			System.out.println("Tiempo actual " + calcularTiempoEmpleado(getSolucionDiaria()));
 			System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));
 			System.out.println("Visita actual " + getSolucionDiaria());
+
+			//Aplicamos BVNS
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			//Busqueda local, Mejora?
 			System.out.println("\nAplicando Mejora basada en agitación sobre la solución ");
@@ -118,35 +123,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
 
 			}
-			if(busquedalocal2a1) {
-				//Aplicar busqueda local
-				System.out.println("\nAplicando busqueda local 2 a 1");
-				boolean mejora = true;
-				while(mejora) {
-					ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
-					if(!busqueda.equals(getSolucionDiaria())) {
-						solucionDiaria = new ArrayList<Integer>(busqueda);
-					} else {
-						mejora = false;
-					}
-				}
-				System.out.println("\nTerminada la busqueda 2 a 1");
-			}
-
-			if(busquedalocal1a1) {
-				System.out.println("\nAplicando busqueda local 1 a 1");
-
-				boolean mejora = true;
-				while(mejora) {
-					ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocal1a1(getSolucionDiaria(), getLugaresVisitados()));
-					if(!busqueda.equals(getSolucionDiaria())) {
-						solucionDiaria = new ArrayList<Integer>(busqueda);
-					} else {
-						mejora = false;
-					}
-				}
-			}
-
+			
 
 			System.out.println("\n\nResumen dia " + (k + 1) + " :");
 			mostrarConsultaItinerarioDia(getSolucionDiaria());
