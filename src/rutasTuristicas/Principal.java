@@ -30,11 +30,13 @@ public class Principal {
 		while(!salir){
 
 			System.out.println("1. Algoritmo Aleatorio, posibilidad de Busqueda Local (2 a 1) y (1 a 1)");
-			System.out.println("2. Algoritmo Greedy, posibilidad de Busqueda Local (2 a 1) y (1 a 1)");
-			System.out.println("3. Algoritmo GRASP, posibilidad de Busqueda Local (2 a 1) y (1 a 1)");
-			System.out.println("4. MultiArranque");
-			System.out.println("5. Algoritmo GRASP con Busqueda Local, Intercambio entre dias");
-			System.out.println("6. Salir");
+			System.out.println("2. Algoritmo Greedy, posibilidad de Búsqueda Local (2 a 1) y (1 a 1)");
+			System.out.println("3. Algoritmo GRASP, posibilidad de Búsqueda Local (2 a 1) y (1 a 1)");
+			System.out.println("4. MultiArranque con algoritmo aleatorio y búsqueda local (2 a 1)");
+			System.out.println("5. Recocido Simulado");
+			System.out.println("6. Búsqueda Tabú");
+			System.out.println("7. VNS Básico");
+			System.out.println("8. Salir");
 
 			System.out.println("Escribe una de las opciones");
 			opcion = sn.nextInt();
@@ -61,12 +63,20 @@ public class Principal {
 				break;
 			case 5:
 				System.out.println("Recocido Simulado, ");
+				break;
 			case 6:
+				System.out.println("Búsqueda Tabú");
+				break;
+			case 7: 
+				System.out.println("VNS Básico");
+				rutaTuristicaBVNS bvns = new rutaTuristicaBVNS(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+				break;
+			case 8:
 				salir=true;
 				System.out.println("Gracias por utilizar este Gestor de Rutas Turisticas");
 				break;
 			default:
-				System.out.println("Solo números entre 1 y 6");
+				System.out.println("Solo números entre 1 y 8");
 			}
 		}
 	}

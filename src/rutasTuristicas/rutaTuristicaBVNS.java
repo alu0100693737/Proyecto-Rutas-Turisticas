@@ -56,7 +56,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 
 		//Para el conjunto de días
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
-			
+
 			solucionDiaria = new ArrayList<Integer>();
 			int minutosAcumulados = 0;
 			//Maximo de comparaciones para decidir que no se puede introducir ningun sitio mas sin sobrepasar la restriccion de tiempo
@@ -103,16 +103,12 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 			System.out.println("Visita actual " + getSolucionDiaria());
 
 			//Aplicamos BVNS
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			if(getSolucionDiaria() != aplicarBVNS(getSolucionDiaria(), getLugaresVisitados())) {
+				System.out.println("PEPE");
+			}
+
+			/*
+
 			//Busqueda local, Mejora?
 			System.out.println("\nAplicando Mejora basada en agitación sobre la solución ");
 			ArrayList<Integer> busquedaCambio = new ArrayList<Integer>(busquedaLocalCambioVisita(getSolucionDiaria()));
@@ -123,11 +119,11 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 					getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
 
 			}
-			
+
 
 			System.out.println("\n\nResumen dia " + (k + 1) + " :");
 			mostrarConsultaItinerarioDia(getSolucionDiaria());
-
+			 */
 			//Añadimos 
 			getLugaresVisitados().add(getSolucionDiaria());
 		}
@@ -140,5 +136,65 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 			System.out.println(getLugaresVisitados().get(i));
 		}
 		System.out.println("\nValor total del viaje: " + valorTotalViaje);
+	}
+
+	//Tiene random cuando se elige cual eliminar
+	public ArrayList<Integer> aplicarBVNS(ArrayList<Integer> solucionDiariaInicial, ArrayList<ArrayList<Integer>> diasAnteriores) {
+
+		int rondaActual = 2;
+
+		System.out.println("\nBVNS básico: Máximo de cambio de entorno = " + K);
+
+		System.out.println("Valor actual " + calcularValorDiario(solucionDiariaInicial));
+		System.out.println("Tiempo actual " + calcularTiempoEmpleado(solucionDiariaInicial));
+		System.out.println("Kilometros actual " + calcularKilometrosEmpleado(solucionDiariaInicial));
+		System.out.println("Visita actual " + solucionDiariaInicial);
+
+		ArrayList<Integer> copiaDia = new ArrayList<Integer>(solucionDiariaInicial);
+		float valorAMejorar = calcularValorDiario(solucionDiariaInicial);
+
+		ArrayList<Integer> candidato = new ArrayList<Integer>();
+		float valorCandidato = valorAMejorar;
+
+		//int prueba = 0;
+		//Si se puede eliminar K elementos en la ronda
+		if((solucionDiariaInicial.size() - 2) >= rondaActual) {
+			//while(prueba < 20) {
+				copiaDia = new ArrayList<Integer>(solucionDiariaInicial);
+
+				for(int i = 0; i < rondaActual; i++) {
+
+					int elegido = (int)(Math.random() * copiaDia.size() - 1) + 1;
+					System.out.println("Elegido " + elegido);
+					copiaDia.remove(elegido);
+				}
+				
+				System.out.println("Antes: " + solucionDiariaInicial + " ahora " + copiaDia);
+				
+				//Introducimos rondaActual elementos aleatorios y agitamos para ordenarlos de forma optima
+				while(copiaDia.size() < solucionDiariaInicial.size()) {
+					int elegido = (int)(Math.random() * getLugaresTuristicosDisponibles().getNumLugares());
+					//Si no ha sido visitado ni los dias anteriores ni el actual
+					if(!yaVisitado(elegido, diasAnteriores, solucionDiariaInicial)) {
+						copiaDia.add(copiaDia.size() - 1, elegido);
+					} else {
+						System.out.println("Problema");
+					}
+				}
+				System.out.println("EAHDFSNJFKADGSDFDFG" + copiaDia);
+				
+				System.out.println("Aplicando Mejora basada en agitación sobre la solución ");
+				if(getSolucionDiaria() != busquedaLocalCambioVisita(getSolucionDiaria())) {
+					System.out.println("Cambio en la solucion, imprimimos de nuevo el itinerario: ");
+					for(int i = 0; i < getSolucionDiaria().size(); i++) 
+						getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
+				}
+				
+				return new ArrayList<Integer>();
+		} else {
+			System.out.println("No se puede seguir a la siguiente ronda de K");
+			System.out.println("K = " + K);
+			return new ArrayList<Integer>();
+		}
 	}
 }
