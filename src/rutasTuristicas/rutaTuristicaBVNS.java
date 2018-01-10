@@ -1,5 +1,6 @@
 package rutasTuristicas;
 
+import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,11 +26,15 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 	 */
 	private final static int K = 4;
 
+	/** 
+	 * Número de candidatos para realizar la elección del próximo lugar en algoritmo GRASP
+	 */
+	private final int LRC = 3;
+
 	public rutaTuristicaBVNS(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 
 		resolverProblema(true);		
-
 	}
 
 	@Override
@@ -57,51 +62,14 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 		//Para el conjunto de días
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 
-			solucionDiaria = new ArrayList<Integer>();
-			int minutosAcumulados = 0;
-			//Maximo de comparaciones para decidir que no se puede introducir ningun sitio mas sin sobrepasar la restriccion de tiempo
-			int maximoComparaciones = 0; 			
-			//Añadimos el primer elemento, de donde partimos
-			getSolucionDiaria().add(0);
 			System.out.println("Dia numero " + (k + 1));
-
-			//Maximo de comparaciones posibles
-			while (maximoComparaciones < 56) {
-				int elegido = (int)(Math.random() * getLugaresTuristicosDisponibles().getNumLugares());
-
-				//Si aun no se ha visitado el lugar
-				if(yaVisitado(elegido, getLugaresVisitados(), getSolucionDiaria()) == false) {
-					//Con el tiempo que nos queda, si sumamos el tiempo en llegar alli, la duracion de la actividad y cuanto tardamos en volver a 0 si lo elegimos, es menor que la hora maxima
-					if((minutosAcumulados + 
-							getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + 
-							(getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60) +  
-							getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[elegido][0]) 
-							< (getNumHorasDiarias() * 60)) {
-
-						System.out.println("\nSe añade: " + elegido + " " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getNombreLugar());
-						System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " minutos");
-						System.out.println("La actividad tiene una duracion de " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60 + " minutos");
-						System.out.println("Kilometros hechos para llegar : " + getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " km");
-
-						//Reseteamos las comparaciones
-						maximoComparaciones = 0;
-						minutosAcumulados += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + (getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60);
-
-						getSolucionDiaria().add(elegido);
-						//System.out.println("Acumulado " + minutosAcumulados + " minutos");
-					}
-					maximoComparaciones++;
-				}
-			}
-
-			getSolucionDiaria().add(0);
-
+			solucionAleatoria();
+			solucionGRASP();
 
 			System.out.println("Solución aleatoria: " + getSolucionDiaria());
 			System.out.println("Valor actual " + calcularValorDiario(getSolucionDiaria()));
 			System.out.println("Tiempo actual " + calcularTiempoEmpleado(getSolucionDiaria()));
 			System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));
-
 
 			//Busqueda local, Mejora?
 			System.out.println("\nAplicando Mejora basada en agitación sobre la solución ");
@@ -115,10 +83,10 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 				System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));
 				System.out.println("Visita actual " + getSolucionDiaria());
 			}
-			
+
 			//Aplicamos BVNS
 			int rondaActual = 1;
-			maximoComparaciones = 0;
+			int maximoComparaciones = 0;
 			while(K <= 4 || (maximoComparaciones < 50)) {
 				ArrayList<Integer> solucionCandidata = new ArrayList<Integer>(aplicarBVNS(getSolucionDiaria(), getLugaresVisitados(), rondaActual));
 				if(calcularValorDiario(getSolucionDiaria()) > calcularValorDiario(solucionCandidata)) {
@@ -157,6 +125,144 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 		System.out.println("Valor total del viaje: " + valorTotalViaje + "\n");
 	}
 
+	public void solucionAleatoria() {
+		solucionDiaria = new ArrayList<Integer>();
+		int minutosAcumulados = 0;
+		//Maximo de comparaciones para decidir que no se puede introducir ningun sitio mas sin sobrepasar la restriccion de tiempo
+		int maximoComparaciones = 0; 			
+		//Añadimos el primer elemento, de donde partimos
+		getSolucionDiaria().add(0);
+
+		//Maximo de comparaciones posibles
+		while (maximoComparaciones < 56) {
+			int elegido = (int)(Math.random() * getLugaresTuristicosDisponibles().getNumLugares());
+
+			//Si aun no se ha visitado el lugar
+			if(yaVisitado(elegido, getLugaresVisitados(), getSolucionDiaria()) == false) {
+				//Con el tiempo que nos queda, si sumamos el tiempo en llegar alli, la duracion de la actividad y cuanto tardamos en volver a 0 si lo elegimos, es menor que la hora maxima
+				if((minutosAcumulados + 
+						getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + 
+						(getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60) +  
+						getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[elegido][0]) 
+						< (getNumHorasDiarias() * 60)) {
+
+					System.out.println("\nSe añade: " + elegido + " " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getNombreLugar());
+					System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " minutos");
+					System.out.println("La actividad tiene una duracion de " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60 + " minutos");
+					System.out.println("Kilometros hechos para llegar : " + getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + " km");
+
+					//Reseteamos las comparaciones
+					maximoComparaciones = 0;
+					minutosAcumulados += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][elegido] + (getLugaresTuristicosDisponibles().getLugaresTuristicos().get(elegido).getDuracion() * 60);
+
+					getSolucionDiaria().add(elegido);
+					//System.out.println("Acumulado " + minutosAcumulados + " minutos");
+				}
+				maximoComparaciones++;
+			}
+		}
+
+		getSolucionDiaria().add(0);
+	}
+
+	public void solucionGRASP() {
+
+		ArrayList<Point2D.Float> lugaresCandidatos = new ArrayList<Point2D.Float>();
+
+		solucionDiaria = new ArrayList<Integer>();
+
+		getSolucionDiaria().add(0);
+		int tiempoAcumulado = 0;
+
+		//BUSCAMOS EL MEJOR CANDIDATO DESDE NUESTRA POSICION ACTUAL
+		//Recorremos los lugares que podemos visitar
+
+		boolean encontrado = true;
+
+		while(encontrado) {
+			System.out.println("\nBuscando un lugar a visitar\n");
+
+			//Candidatos a ocupar el siguiente lugar
+			lugaresCandidatos.clear();
+
+			//Buscamos entre todas las posibilidades
+			for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
+				//Si no ha sido visitado
+				if(yaVisitado(i, getLugaresVisitados(), getSolucionDiaria()) == false) {
+					//Si se puede introducir por tiempo
+					if(((getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][i] + 
+							(getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getDuracion() * 60) 
+							+ getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[i][0]) + 
+							tiempoAcumulado) <= (getNumHorasDiarias() * 60)) {
+						if(lugaresCandidatos.size() < LRC) {
+							lugaresCandidatos.add(new Point2D.Float(getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
+									getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion(), i));
+
+							System.out.println("Valor, posicion " + lugaresCandidatos.get(lugaresCandidatos.size() - 1));
+						} else {
+							double peor = lugaresCandidatos.get(0).getX();
+							double posicionPeor = 0;
+
+							//Buscamos el peor ya introducido y lo comparamos con el nuevo
+							for(int a = 1; a < lugaresCandidatos.size(); a++) {
+								if(lugaresCandidatos.get(a).getX() > peor) {
+									peor = lugaresCandidatos.get(a).getX();
+									posicionPeor = a;
+								}
+							}
+
+							//si el valor que se desea introducir es mejor que el peor ya insertado, borramos el anterior e insertamos el nuevo
+							if((getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
+									getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion()) < peor) {
+								System.out.println("Quitando " + peor + " poniendo " + getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
+										getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion());
+
+								lugaresCandidatos.remove((int)posicionPeor);
+
+								lugaresCandidatos.add(new Point2D.Float(getLugaresTuristicosDisponibles().getMatrizDistancias().getMatrizDistancias()[getSolucionDiaria().get(getSolucionDiaria().size() - 1)][i] /
+										getLugaresTuristicosDisponibles().getLugaresTuristicos().get(i).getPuntuacion(), i));
+							}
+						}
+					}
+				} 
+			}
+
+			//No se ha encontrado ningun valor que pueda insertarse sin superar el tiempo limite diario
+			if(lugaresCandidatos.size() == 0) {
+				System.out.println("Fin del dia. Tiempo: " + (tiempoAcumulado + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][0]));
+				encontrado = false;
+			} else { //Se ha encontrado un sitio que cumpla con las especificaciones
+
+				System.out.println("\nAnalizadas todas las opciones, toca decidir:\n");
+				for(int a = 0; a < lugaresCandidatos.size(); a++) {
+					System.out.println("Candidato num " + a + ": " + lugaresCandidatos.get(a));
+				}
+
+				//elegimos uno de forma aleatoria
+				int elegido = (int)(Math.random() * lugaresCandidatos.size());
+
+				System.out.println("Elegido " + elegido);
+
+				System.out.println("\nProximo lugar: " + (int)lugaresCandidatos.get(elegido).getY() + "\n");
+				getLugaresTuristicosDisponibles().getLugaresTuristicos().get((int)lugaresCandidatos.get(elegido).getY()).mostrarLugar();
+
+				System.out.println("Se tarda en llegar " + getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][(int)lugaresCandidatos.get(elegido).getY()] + " y estaremos en la actividad " + getLugaresTuristicosDisponibles().getLugaresTuristicos().get((int)lugaresCandidatos.get(elegido).getY()).getDuracion() * 60);
+
+				//A�adimos el tiempo que tarda en llegar al sitio
+				tiempoAcumulado += getLugaresTuristicosDisponibles().getMatrizTiempos().getMatrizTiempos()[getSolucionDiaria().get(getSolucionDiaria().size()-1)][(int)lugaresCandidatos.get(elegido).getY()];
+				//A�adimos el tiempo que estar� en el sitio
+				tiempoAcumulado += getLugaresTuristicosDisponibles().getLugaresTuristicos().get((int)lugaresCandidatos.get(elegido).getY()).getDuracion() * 60;
+
+				System.out.println("Tiempo acumulado " + tiempoAcumulado + " min");
+				System.out.println("Valor: " + lugaresCandidatos.get(elegido).getX());
+
+				//A�adimos el lugar
+				getSolucionDiaria().add((int)lugaresCandidatos.get(elegido).getY());
+			}
+		}
+
+		getSolucionDiaria().add(0);
+	}
 	//Tiene random cuando se elige cual eliminar
 	public ArrayList<Integer> aplicarBVNS(ArrayList<Integer> solucionDiariaInicial, ArrayList<ArrayList<Integer>> diasAnteriores, int ronda) {
 
@@ -180,7 +286,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 				System.out.println("Elegido " + elegido + " " + copiaDia.get(elegido));
 				copiaDia.remove(elegido);
 			}
-			
+
 			System.out.println("Iteracion ya borrados " + copiaDia);
 			boolean encontrado = false;
 			ArrayList<Integer> copiaEliminados = new ArrayList<Integer>(copiaDia);
@@ -203,14 +309,14 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 				if((calcularTiempoEmpleado(copiaDia) < getNumHorasDiarias() * 60) && (Math.abs(calcularTiempoEmpleado(copiaDia) - calcularTiempoEmpleado(solucionDiariaInicial))) < 30) {
 					encontrado = true;
 					System.out.println("Encontrado " + calcularTiempoEmpleado(copiaDia));
-					
+
 				} else {
 					System.out.println("Se borro");
 					copiaDia = new ArrayList<Integer>(copiaEliminados);
 					numComparaciones++;
 				}
 			}
-			
+
 			//Si no se ha encontrado, se devuelve el original
 			if(numComparaciones == 10) {
 				System.out.println("No encontrada una alternativa");
@@ -219,7 +325,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 			System.out.println("Visita actual " + getSolucionDiaria());
 			System.out.println("Visita probable " + copiaDia);
 			System.out.println("Valor probable " + calcularValorDiario(copiaDia));
-			
+
 			System.out.println("\nAplicando Mejora basada en agitación sobre la solución ");
 			ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocalCambioVisita(copiaDia));
 			if(!copiaDia.equals(busqueda)) {
@@ -229,7 +335,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 				copiaDia = new ArrayList<Integer>(busqueda);
 			}
 			return copiaDia;
-			
+
 		} else {
 			System.out.println("No se puede seguir a la siguiente ronda de K");
 			System.out.println("K = " + K);
