@@ -62,13 +62,15 @@ public class Principal {
 				rutaTuristicaMultiArranque multiArranque = new rutaTuristicaMultiArranque(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
 				break;
 			case 5:
-				System.out.println("Recocido Simulado, ");
+				System.out.println("Recocido Simulado con algoritmo Aleatorio ");
+				rutaTuristicaRecocidoSimulado recocido = new rutaTuristicaRecocidoSimulado(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
 				break;
 			case 6:
 				System.out.println("Búsqueda Tabú");
+				rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
 				break;
 			case 7: 
-				System.out.println("VNS Básico");
+				System.out.println("VNS Básico con Algoritmo Aleatorio");
 				rutaTuristicaBVNS bvns = new rutaTuristicaBVNS(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
 				break;
 			case 8:

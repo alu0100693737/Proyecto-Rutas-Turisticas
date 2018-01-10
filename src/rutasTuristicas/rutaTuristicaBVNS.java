@@ -115,11 +115,11 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 				System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));
 				System.out.println("Visita actual " + getSolucionDiaria());
 			}
+			
 			//Aplicamos BVNS
-
 			int rondaActual = 1;
 			maximoComparaciones = 0;
-			while(K <= 4 || maximoComparaciones < 50) {
+			while(K <= 4 || (maximoComparaciones < 50)) {
 				ArrayList<Integer> solucionCandidata = new ArrayList<Integer>(aplicarBVNS(getSolucionDiaria(), getLugaresVisitados(), rondaActual));
 				if(calcularValorDiario(getSolucionDiaria()) > calcularValorDiario(solucionCandidata)) {
 					System.out.println("\n\nSE CAMBIA LA SOLUCION Y SE VUELVE A EMPEZAR\n");
@@ -129,7 +129,6 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 					System.out.println("Agitacion hecha " + solucionCandidata);
 					System.out.println("Valor actual " + calcularValorDiario(solucionCandidata));
 					System.out.println("Ronda num: " + rondaActual);
-					//aplicarBVNS(getSolucionDiaria(), getLugaresVisitados(), rondaActual);
 				} else {
 					rondaActual++;
 					maximoComparaciones++;
@@ -144,7 +143,6 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 			}
 
 			System.out.println("Terminado el VNS ");
-
 			getLugaresVisitados().add(getSolucionDiaria());
 		}
 
@@ -156,7 +154,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 			System.out.println(getLugaresVisitados().get(i));
 			System.out.println("Tiempo viaje " + calcularTiempoEmpleado(getLugaresVisitados().get(i)));
 		}
-		System.out.println("\nValor total del viaje: " + valorTotalViaje);
+		System.out.println("Valor total del viaje: " + valorTotalViaje + "\n");
 	}
 
 	//Tiene random cuando se elige cual eliminar
@@ -172,19 +170,12 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 		System.out.println("Visita actual " + solucionDiariaInicial);
 
 		ArrayList<Integer> copiaDia = new ArrayList<Integer>(solucionDiariaInicial);
-		float valorAMejorar = calcularValorDiario(solucionDiariaInicial);
 
-		ArrayList<Integer> candidato = new ArrayList<Integer>();
-		float valorCandidato = valorAMejorar;
-
-		//int prueba = 0;
 		//Si se puede eliminar K elementos en la ronda
 		if((solucionDiariaInicial.size() - 2) > rondaActual) {
-			//while(prueba < 20) {
 			copiaDia = new ArrayList<Integer>(solucionDiariaInicial);
 
 			for(int i = 0; i < rondaActual; i++) {
-
 				int elegido = (int)(Math.random() * (copiaDia.size() - 2)) + 1;
 				System.out.println("Elegido " + elegido + " " + copiaDia.get(elegido));
 				copiaDia.remove(elegido);
@@ -228,10 +219,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 			System.out.println("Visita actual " + getSolucionDiaria());
 			System.out.println("Visita probable " + copiaDia);
 			System.out.println("Valor probable " + calcularValorDiario(copiaDia));
-			//System.out.println("Tiempo actual " + calcularTiempoEmpleado(copiaDia));
-			//System.out.println("Kilometros actual " + calcularKilometrosEmpleado(copiaDia));
-
-
+			
 			System.out.println("\nAplicando Mejora basada en agitación sobre la solución ");
 			ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocalCambioVisita(copiaDia));
 			if(!copiaDia.equals(busqueda)) {
@@ -239,13 +227,9 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 				System.out.println("Agitacion hecha " + copiaDia);
 				System.out.println("Valor actual " + calcularValorDiario(busqueda));
 				copiaDia = new ArrayList<Integer>(busqueda);
-				//for(int i = 0; i < getSolucionDiaria().size(); i++) 
-				//	getLugaresTuristicosDisponibles().getLugaresTuristicos().get(getSolucionDiaria().get(i)).mostrarLugar();
 			}
-
-
-
 			return copiaDia;
+			
 		} else {
 			System.out.println("No se puede seguir a la siguiente ronda de K");
 			System.out.println("K = " + K);
