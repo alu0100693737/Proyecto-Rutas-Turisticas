@@ -19,12 +19,15 @@ import java.util.ArrayList;
  * Asignatura "Sistemas Inteligentes e Interacción Persona Computador"
  * Master en Ingeniería Informática por la ULL
  */
-public class rutaTuristicaMultiArranque {
+public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 	
 	/**
 	 * Número de veces que se ejecuta el algoritmo aleatoria con búsqueda local 2 a 1
 	 */
 	public static int ITERACIONES = 10;
+	
+	//false para aleatorio 1 para grasp
+		private boolean algoritmo; 
 
 	/**
 	 * Constructor de la clase rutaTuristicaMultiArranque
@@ -36,8 +39,10 @@ public class rutaTuristicaMultiArranque {
 	 * @throws FileNotFoundException	Error, fichero no valido
 	 * @throws IOException				Error de entrada/salida
 	 */
-	public rutaTuristicaMultiArranque(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
-		resolverEstrategiaMultiArranque(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
+	public rutaTuristicaMultiArranque(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia, boolean algor) throws FileNotFoundException, IOException {
+		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
+		algoritmo = algor;
+		resolverProblema(true);	//No aplicar busquedas locales
 	}
 
 	/**
@@ -48,8 +53,10 @@ public class rutaTuristicaMultiArranque {
 	 * Para su calculo, se tiene en cuenta cuánto se tarda en llegar de un sitio a otro y la duración de
 	 * la actividad. Debe llegar al punto de partida antes de que se cumpla el numHoras Máximo
 	 */
-	public void resolverEstrategiaMultiArranque(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia) throws FileNotFoundException, IOException {
+	@Override
+	public void resolverProblema(boolean estrategia) {
 		
+		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
 		ArrayList<ArrayList<Integer>> solucionFinal = new ArrayList<ArrayList<Integer>>();
 		float mejorValor = Float.MAX_VALUE;
 		int iteracionElegida = -1;
@@ -57,21 +64,20 @@ public class rutaTuristicaMultiArranque {
 		for(int i = 0; i < ITERACIONES; i++) {
 			System.out.println("------------------------------------------");
 			System.out.println("ITERACION NUM: " + i);
-			rutaTuristicaAleatoria aleatorio = new rutaTuristicaAleatoria(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
-			
-			//Resolvemos sin aplicar Busqueda Local ninguna
-			aleatorio.resolverProblema(true);
-			
-			float valorAcumulado = 0;
-			for(int j = 0; j < aleatorio.getLugaresVisitados().size(); j++) {
-				valorAcumulado += aleatorio.calcularValorDiario(aleatorio.getLugaresVisitados().get(j));
-			}
-			
+				if(getAlgoritmoInicial() == false) {
+					solucionAleatoria();
+					System.out.println("Solución aleatoria con agitación: ");
+				} else {
+					solucionGRASP();
+					System.out.println("Solución GRASP con agitación: ");
+				}
+
+			float valorAcumulado = calcularValorTotal(getLugaresVisitados());
 			if(mejorValor > valorAcumulado) {
 				System.out.println("Mejor solución en: " + i);
 				iteracionElegida = i;
 				mejorValor = valorAcumulado;
-				solucionFinal = new ArrayList<ArrayList<Integer>>(aleatorio.getLugaresVisitados());
+				solucionFinal = new ArrayList<ArrayList<Integer>>(getLugaresVisitados());
 			}
 		}
 		
@@ -82,5 +88,9 @@ public class rutaTuristicaMultiArranque {
 		
 		System.out.println("Encontrado en la Iteración " + iteracionElegida);
 		System.out.println("Valor acumulado " + mejorValor);
+	}
+	
+	public boolean getAlgoritmoInicial() {
+		return algoritmo;
 	}
 }

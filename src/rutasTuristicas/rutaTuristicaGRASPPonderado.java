@@ -182,7 +182,6 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			getSolucionDiaria().add(0);
 			mostrarConsultaItinerarioDia(getSolucionDiaria());
 
-
 			System.out.println("Aplicando Mejora basada en agitación sobre la solución ");
 			if(getSolucionDiaria() != busquedaLocalCambioVisita(getSolucionDiaria())) {
 				System.out.println("Cambio en la solucion, imprimimos de nuevo el itinerario: ");
@@ -196,11 +195,10 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 				boolean mejora = true;
 				while(mejora) {
 					ArrayList<Integer> busqueda = new ArrayList<Integer>(busquedaLocal2a1(getSolucionDiaria(), getLugaresVisitados()));
-					if(!busqueda.equals(getSolucionDiaria())) {
+					if(!busqueda.equals(getSolucionDiaria())) 
 						solucionDiaria = new ArrayList<Integer>(busqueda);
-					} else {
+					else 
 						mejora = false;
-					}
 				}
 				System.out.println("\nTerminada la busqueda 2 a 1");
 			}
@@ -228,7 +226,6 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 		mostrarItinerarioViaje();
 	}
 
-	
 	/** 
 	 * Método que devuelve los lugares candidatos para la visita del próximo lugar
 	 * @return ArrayList de tipo Point2D Float (valor, posicion)
