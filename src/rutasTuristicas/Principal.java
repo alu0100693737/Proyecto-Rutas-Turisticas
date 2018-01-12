@@ -80,7 +80,7 @@ public class Principal {
 				break;
 			case 6:
 				System.out.println("Búsqueda Tabú");
-				rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+				rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
 				break;
 			case 7: 
 				System.out.println("VNS Básico con Algoritmo Aleatorio o GRASP");

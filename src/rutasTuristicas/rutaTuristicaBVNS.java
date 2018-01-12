@@ -112,7 +112,8 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 			System.out.println("Terminado el VNS ");
 			getLugaresVisitados().add(getSolucionDiaria());
 		}
-		System.out.println("\n-------------------------------------------------------");
+		System.out.println("\n-----------------------------------------");
+		mostrarItinerarioViaje();
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 

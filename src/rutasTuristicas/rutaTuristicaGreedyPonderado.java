@@ -184,6 +184,7 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 			System.out.println("Lugares Visitados " + getSolucionDiaria());
 		}
 		mostrarItinerarioViaje();
+		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 	
 }

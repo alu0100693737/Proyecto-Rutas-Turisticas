@@ -222,8 +222,9 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			System.out.println("Dia " + (k + 1) + " terminado.\n----------------------------------------------------------------------------------\n");
 			System.out.println("Lugares Visitados " + getSolucionDiaria());
 		}
-		System.out.println("Tiempo acumulado " + calcularTiempoEmpleado(getLugaresVisitados().get(0)));
+		//System.out.println("Tiempo acumulado " + calcularTiempoEmpleado(getLugaresVisitados().get(0)));
 		mostrarItinerarioViaje();
+		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 
 	/** 

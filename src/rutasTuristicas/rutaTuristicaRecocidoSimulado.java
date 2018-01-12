@@ -79,6 +79,8 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 			getLugaresVisitados().add(getSolucionDiaria());
 		}
 		System.out.println("\n-------------------------------------------------------");
+		
+		mostrarItinerarioViaje();
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 
