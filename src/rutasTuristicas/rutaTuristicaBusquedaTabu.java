@@ -1,5 +1,7 @@
 package rutasTuristicas;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +12,9 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 	 */
 	private final int LRC = 3;
 	private final int NUMSOLUCIONES = 30;
-	private ArrayList<Integer> listaTabu; //Mayor que 4 se bloquea 3 tiempos
+	
+	private final int LIMITETABU = 3;
+	private final int TIEMPOTABU = 2;
 
 	//false para aleatorio 1 para grasp
 	private boolean algoritmo; 
@@ -19,20 +23,20 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 	public rutaTuristicaBusquedaTabu(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia, boolean algor) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 		algoritmo = algor;
-		listaTabu = new ArrayList<Integer>();
-		for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
-			getListaTabu().add(0);
-		}
-		resolverProblema(true);		
+		listaTabu = new ArrayList<Point>();
 
+		resolverProblema(true);		
 	}
 
 	@Override
 	public void resolverProblema(boolean Estrategia) {
-		
+		ArrayList<ArrayList<ArrayList<Integer>>> conjuntosSoluciones = new ArrayList<ArrayList<ArrayList<Integer>>>();
+
 		ArrayList<ArrayList<Integer>> solucionFinal = new ArrayList<ArrayList<Integer>>();
 		float mejorValor = Float.MAX_VALUE;
 		int iteracionElegida = -1;
+
+		listaTabu = new ArrayList<Point>();
 
 		System.out.println("Tenemos " + getNumDiasEstancia() + " dias de estancia con " + getNumHorasDiarias() + " horas de visita a la isla.");
 		System.out.println("minutos totales diarios " + getNumHorasDiarias() * 60);
@@ -40,18 +44,33 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 
 		for(int i = 0; i < NUMSOLUCIONES; i++) {
 			lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
-			solucionDiaria = new ArrayList<Integer>();
+
+			System.out.println("\nITERACION NUM " + (i + 1));
+
+			if(!getListaTabu().isEmpty()) {
+				System.out.println("Lista no vacia");
+				for(int p = 0; p < getListaTabu().size(); p++) {
+					if(getListaTabu().get(p).y == 0) {
+						System.out.println("SACANDO DE LA BUSQUEDA TABU EL ELEMENTO " + getListaTabu().get(p).x);
+						getListaTabu().remove(p);
+						p--;
+					} else {
+						getListaTabu().get(p).y -= 1;
+					}
+				}
+			}
+
 
 			//Para el conjunto de días
 			for(int k = 0; k < getNumDiasEstancia(); k++) {
-
-				System.out.println("Dia numero " + (k + 1));
+				solucionDiaria = new ArrayList<Integer>();
+				//System.out.println("Dia numero " + (k + 1));
 				if(getAlgoritmoInicial() == false) {
 					solucionAleatoria();
-					System.out.println("Solución aleatoria con agitación: ");
+					//System.out.println("Solución aleatoria con agitación: ");
 				} else {
 					solucionGRASP();
-					System.out.println("Solución GRASP con agitación: ");
+					//System.out.println("Solución GRASP con agitación: ");
 				}
 
 				//Busqueda local agitacion, Mejora?
@@ -61,18 +80,77 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 					solucionDiaria = new ArrayList<Integer>(busquedaCambio);
 				}
 				System.out.println("Solucion " + getSolucionDiaria() + " con valor " + calcularValorDiario(getSolucionDiaria()));
-				System.out.println("Tiempo actual " + calcularTiempoEmpleado(getSolucionDiaria()));
-				System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));
+				/*System.out.println("Tiempo actual " + calcularTiempoEmpleado(getSolucionDiaria()));
+				System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));*/
+				getLugaresVisitados().add(getSolucionDiaria());
 
 			}
 			System.out.println("\n-----------------------------------------");
-			mostrarItinerarioViaje();
+			//mostrarItinerarioViaje();
 			System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
-		}
-	}
 
-	public ArrayList<Integer> getListaTabu() {
-		return listaTabu;
+			float valorAcumulado = calcularValorTotal(getLugaresVisitados());
+			if(mejorValor > valorAcumulado) {
+				System.out.println("\nAAAAAAA Mejorando solución en iteracion: " + i + " de " + mejorValor + " a " + valorAcumulado);
+				iteracionElegida = i;
+				mejorValor = valorAcumulado;
+				solucionFinal = new ArrayList<ArrayList<Integer>>(getLugaresVisitados());
+				System.out.println(solucionFinal);
+			}
+			conjuntosSoluciones.add(new ArrayList<ArrayList<Integer>>(getLugaresVisitados()));
+
+
+			if(i >= (LIMITETABU - 1)) {
+				System.out.println("\nBusqueda Tabu, bloqueo de lugares");
+				System.out.println("Iteracion num " + i);
+				System.out.println(conjuntosSoluciones.get(i));
+				boolean encontrado = false;
+				//Si se repite la ciudad el mismo dia en los ultimos 3 itinerarios, bloqueamos
+				for(int k = 1; k < getLugaresTuristicosDisponibles().getNumLugares(); k++) {
+					for(int l = 0; l < getNumDiasEstancia(); l++) {
+						if(conjuntosSoluciones.get(i).get(l).contains(k)) {
+
+							for(int m = 0; m < getNumDiasEstancia(); m++) {
+								if(conjuntosSoluciones.get(i - 1).get(m).contains(k)) {
+									for(int n = 0; n < getNumDiasEstancia(); n++) {
+										if(conjuntosSoluciones.get(i - 2).get(n).contains(k)) {
+											encontrado = true;
+											System.out.println("ENCONTRADO " + k + " EN "); 
+											System.out.println(conjuntosSoluciones.get(i));
+											System.out.println(conjuntosSoluciones.get(i - 1));
+											System.out.println(conjuntosSoluciones.get(i - 2));
+											//Limite tabu tiempo aleatorio limitado?
+											getListaTabu().add(new Point(k, TIEMPOTABU));
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+
+		}
+
+		System.out.println("LA MEJOR SOLUCION ES: ");
+		for(int i = 0; i < solucionFinal.size(); i++) {
+			System.out.println(solucionFinal.get(i));
+			System.out.println("Dia: " + i);
+			mostrarConsultaItinerarioDia(solucionFinal.get(i));
+		}
+
+
+
+		float valorTotalViaje = 0;
+		for(int i = 0; i < solucionFinal.size(); i++) {
+			valorTotalViaje += calcularValorDiario(solucionFinal.get(i));
+			System.out.println(solucionFinal.get(i) + " con valor " + calcularValorDiario(solucionFinal.get(i)));
+		}
+		System.out.println("Mejor iteracion: " + iteracionElegida);
+		System.out.println("\nValor total del viaje: " + valorTotalViaje);
+		System.out.println("Encontrado en la Iteración " + iteracionElegida);
+		System.out.println("Valor acumulado " + mejorValor);
 	}
 
 	public boolean getAlgoritmoInicial() {

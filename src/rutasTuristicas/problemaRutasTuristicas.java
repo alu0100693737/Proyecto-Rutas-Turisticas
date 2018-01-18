@@ -1,5 +1,6 @@
 package rutasTuristicas;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,6 +45,8 @@ public abstract class problemaRutasTuristicas {
 	 * de todos los dias permitidos
 	 */
 	protected ArrayList<ArrayList<Integer>> lugaresVisitados;
+	
+	protected ArrayList<Point> listaTabu; //Mayor que 4 se bloquea 3 tiempos
 
 	/**
 	 * Constructor de la Clase problemaRutasTuristicas
@@ -59,6 +62,7 @@ public abstract class problemaRutasTuristicas {
 		lugaresTuristicosDisponibles_ = new puntosTuristicos(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos);
 		numDiasEstancia_ = numDias;
 		numHorasDiarias_ = numHorasDia;
+		listaTabu = new ArrayList<Point>();
 	}
 
 	/** 
@@ -260,8 +264,8 @@ public abstract class problemaRutasTuristicas {
 		float valorTotalViaje = 0;
 		for(int i = 0; i < itinerario.size(); i++) {
 			valorTotalViaje += calcularValorDiario(itinerario.get(i));
-			System.out.println(itinerario.get(i) + " con valor " + calcularValorDiario(itinerario.get(i)));
-			System.out.println("Tiempo viaje " + calcularTiempoEmpleado(itinerario.get(i)));
+			//System.out.println(itinerario.get(i) + " con valor " + calcularValorDiario(itinerario.get(i)));
+			//System.out.println("Tiempo viaje " + calcularTiempoEmpleado(itinerario.get(i)));
 		}
 		return valorTotalViaje;
 	}
@@ -326,6 +330,9 @@ public abstract class problemaRutasTuristicas {
 		//Maximo de comparaciones posibles
 		while (maximoComparaciones < 56) {
 			int elegido = (int)(Math.random() * getLugaresTuristicosDisponibles().getNumLugares());
+			while (contieneListaTabu(elegido)) {
+				elegido = (int)(Math.random() * getLugaresTuristicosDisponibles().getNumLugares());
+			}
 			//Si aun no se ha visitado el lugar
 			if(yaVisitado(elegido, getLugaresVisitados(), getSolucionDiaria()) == false) {
 				//Con el tiempo que nos queda, si sumamos el tiempo en llegar alli, la duracion de la actividad y cuanto tardamos en volver a 0 si lo elegimos, es menor que la hora maxima
@@ -366,6 +373,7 @@ public abstract class problemaRutasTuristicas {
 
 			//Buscamos entre todas las posibilidades
 			for(int i = 0; i < getLugaresTuristicosDisponibles().getNumLugares(); i++) {
+				if(!contieneListaTabu(i))
 				//Si no ha sido visitado
 				if(yaVisitado(i, getLugaresVisitados(), getSolucionDiaria()) == false) {
 					//Si se puede introducir por tiempo
@@ -453,6 +461,14 @@ public abstract class problemaRutasTuristicas {
 		System.out.println("Valor Acumulado diario: " + calcularValorDiario(getSolucionDiaria()));
 	}
 
+	public boolean contieneListaTabu(int lugar) {
+		for(int i = 0; i < getListaTabu().size(); i++) {
+			if(getListaTabu().get(i).x == lugar) {
+				return true;
+			}
+		}
+		return false;
+	}
 	///GETS
 
 	/**
@@ -493,5 +509,9 @@ public abstract class problemaRutasTuristicas {
 	 */
 	public ArrayList<ArrayList<Integer>> getLugaresVisitados() {
 		return lugaresVisitados;
+	}
+	
+	public ArrayList<Point> getListaTabu() {
+		return listaTabu;
 	}
 }
