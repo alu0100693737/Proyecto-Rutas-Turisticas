@@ -157,6 +157,7 @@ public class rutaTuristicaAleatoria extends problemaRutasTuristicas {
 
 		System.out.println("\n-----------------------------------------");
 		mostrarItinerarioViaje();
+		System.out.println(getLugaresVisitados());
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 }

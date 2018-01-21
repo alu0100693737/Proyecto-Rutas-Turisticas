@@ -38,7 +38,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 	public rutaTuristicaBVNS(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia, boolean algor) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 		algoritmo = algor;
-		resolverProblema(true);		
+		resolverProblema(algor);		
 	}
 
 	@Override
@@ -114,6 +114,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 		}
 		System.out.println("\n-----------------------------------------");
 		mostrarItinerarioViaje();
+		System.out.println(getLugaresVisitados());
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 

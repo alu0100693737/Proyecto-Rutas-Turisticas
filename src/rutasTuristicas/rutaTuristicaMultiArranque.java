@@ -90,8 +90,6 @@ public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 						}
 					}
 					System.out.println("\nTerminada la busqueda 2 a 1");
-				
-
 				getLugaresVisitados().add(getSolucionDiaria());
 			}
 			float valorAcumulado = calcularValorTotal(getLugaresVisitados());
@@ -120,7 +118,7 @@ public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 		}
 		System.out.println("Mejor iteracion: " + iteracionElegida);
 		System.out.println("\nValor total del viaje: " + valorTotalViaje);
-		System.out.println("Encontrado en la Iteración " + iteracionElegida);
+		System.out.println(getLugaresVisitados());
 		System.out.println("Valor acumulado " + mejorValor);
 	}
 

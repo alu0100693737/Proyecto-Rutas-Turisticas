@@ -224,6 +224,7 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 		}
 		//System.out.println("Tiempo acumulado " + calcularTiempoEmpleado(getLugaresVisitados().get(0)));
 		mostrarItinerarioViaje();
+		System.out.println(getLugaresVisitados());
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 

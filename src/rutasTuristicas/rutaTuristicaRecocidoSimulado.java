@@ -16,7 +16,7 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 	/** 
 	 * Número de candidatos para realizar la elección del próximo lugar en algoritmo GRASP
 	 */
-	private final int LRC = 3;
+	private final int TEMPERATURA = 25;
 
 	//false para aleatorio 1 para grasp
 	private boolean algoritmo; 
@@ -61,10 +61,10 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 			
 			System.out.println("\nAplicando Recocido simulado ");
 
-			float temperatura = 25;
-			while(temperatura > 0) {
-				System.out.println("\nTEMPERATURA  " + temperatura);
-				ArrayList<Integer> recocidoSimulado = new ArrayList<Integer>(aplicarRecocidoSimulado(getSolucionDiaria(), getLugaresVisitados(), temperatura));
+			float enfriamiento = 100;
+			while(((TEMPERATURA * enfriamiento) / 100) > 0) {
+				System.out.println("\nTEMPERATURA  " + enfriamiento + " " + ((TEMPERATURA * enfriamiento) / 100));
+				ArrayList<Integer> recocidoSimulado = new ArrayList<Integer>(aplicarRecocidoSimulado(getSolucionDiaria(), getLugaresVisitados(), ((TEMPERATURA * enfriamiento) / 100)));
 				if(!getSolucionDiaria().equals(recocidoSimulado)) {
 					System.out.println("Cambio en la solucion, imprimimos de nuevo el itinerario: ");
 					solucionDiaria = new ArrayList<Integer>(recocidoSimulado);
@@ -74,13 +74,14 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 					System.out.println("Kilometros actual " + calcularKilometrosEmpleado(getSolucionDiaria()));
 					System.out.println("Visita actual " + getSolucionDiaria());
 				} 
-				temperatura -= 0.5;
+				enfriamiento -= 5;
 			}
 			getLugaresVisitados().add(getSolucionDiaria());
 		}
 		System.out.println("\n-------------------------------------------------------");
 		
 		mostrarItinerarioViaje();
+		System.out.println(getLugaresVisitados());
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 
@@ -149,8 +150,9 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 				//System.out.println("La diferencia es de " + diferenciaValores);
 				//System.out.println("A " + (diferenciaValores/temperatura) + " E " + Math.E);
 				//System.out.println("Probabilidad de " + (2 / (1 + Math.pow(Math.E, (diferenciaValores/temperatura)))));
-				if((2 / (1 + Math.pow(Math.E, (diferenciaValores/temperatura)))) > 0.90) {
-					System.out.println((2 / (1 + Math.pow(Math.E, (diferenciaValores/temperatura)))));
+				System.out.println("PROBABILIDAD " + (Math.pow(Math.E, -(diferenciaValores/temperatura))));
+				if((Math.pow(Math.E, -(diferenciaValores/temperatura))) > 0.90) {
+					
 					System.out.println("CAMBIANDO AUNQUE ES PEOR");
 					return copiaDia;
 				} else 

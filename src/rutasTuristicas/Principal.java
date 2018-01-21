@@ -36,7 +36,8 @@ public class Principal {
 			System.out.println("5. Recocido Simulado con algoritmo Aleatorio o GRASP\n");
 			System.out.println("6. Búsqueda Tabú con algoritmo Aleatorio o GRASP\n");
 			System.out.println("7. VNS Básico con algoritmo Aleatorio o GRASP\n");
-			System.out.println("8. Salir");
+			System.out.println("8. Busqueda Memoria a Largo Plazo\n");
+			System.out.println("9. Salir");
 
 			System.out.println("\n\tEscribe una de las opciones");
 			opcion = sn.nextInt();
@@ -66,7 +67,6 @@ public class Principal {
 				} else if (eleccion == 2) {
 					rutaTuristicaMultiArranque multiArranque = new rutaTuristicaMultiArranque(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
 				}
-
 				break;
 			case 5:
 				System.out.println("Recocido Simulado con algoritmo Aleatorio o GRASP");
@@ -80,7 +80,14 @@ public class Principal {
 				break;
 			case 6:
 				System.out.println("Búsqueda Tabú");
-				rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
+				System.out.println("Búsqueda Tabú con Algoritmo Aleatorio o GRASP");
+				System.out.println("Pulse 1 para utilizar un algoritmo aleatorio, pulse 2 para estrategia GRASP");
+				eleccion = sn.nextInt();
+				if(eleccion == 1) {
+					rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), false);
+				} else if (eleccion == 2)  {
+					rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
+				}
 				break;
 			case 7: 
 				System.out.println("VNS Básico con Algoritmo Aleatorio o GRASP");
@@ -92,7 +99,17 @@ public class Principal {
 					rutaTuristicaBVNS bvns = new rutaTuristicaBVNS(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
 				}
 				break;
-			case 8:
+			case 8: 
+				System.out.println("Búsqueda Memoria Largo Plazo");
+				System.out.println("Pulse 1 para utilizar un algoritmo aleatorio, pulse 2 para estrategia GRASP");
+				eleccion = sn.nextInt();
+				if(eleccion == 1) {
+					rutaTuristicaBusquedaMemoriaLargoPlazo busquedaMemoriaLargoPlazo = new rutaTuristicaBusquedaMemoriaLargoPlazo(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), false);
+				} else if (eleccion == 2)  {
+					rutaTuristicaBusquedaMemoriaLargoPlazo busquedaMemoriaLargoPlazo = new rutaTuristicaBusquedaMemoriaLargoPlazo(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
+				}
+				break;
+			case 9:
 				salir=true;
 				System.out.println("Gracias por utilizar este Gestor de Rutas Turisticas");
 				break;
