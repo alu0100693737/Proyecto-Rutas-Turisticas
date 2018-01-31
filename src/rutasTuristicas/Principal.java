@@ -36,7 +36,7 @@ public class Principal {
 			System.out.println("5. Recocido Simulado con algoritmo Aleatorio o GRASP\n");
 			System.out.println("6. Búsqueda Tabú con algoritmo Aleatorio o GRASP\n");
 			System.out.println("7. VNS Básico con algoritmo Aleatorio o GRASP\n");
-			System.out.println("8. Busqueda Memoria a Largo Plazo\n");
+			System.out.println("8. Busqueda Memoria a Largo Plazo con algoritmo Aleatorio o GRASP\n");
 			System.out.println("9. Salir");
 
 			System.out.println("\n\tEscribe una de las opciones");

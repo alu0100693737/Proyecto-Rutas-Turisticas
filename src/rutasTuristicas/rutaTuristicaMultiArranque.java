@@ -26,7 +26,9 @@ public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 	 */
 	public static int ITERACIONES = 10;
 
-	//false para aleatorio 1 para grasp
+	/**
+	 * false para aleatorio 1 para grasp
+	 */
 	private boolean algoritmo; 
 
 	/**
@@ -45,6 +47,8 @@ public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 		resolverProblema(true);	//No aplicar busquedas locales
 	}
 
+
+	@Override
 	/**
 	 * Metodo que resuelve el problema de Gestor de Rutas Turísticas utilizando MultiArranque
 	 * Se repite la ejecución de un algoritmo aleatorio con búsqueda local 2 a 1 (Algoritmo Hibrido) ITERACIONES veces.
@@ -53,7 +57,6 @@ public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 	 * Para su calculo, se tiene en cuenta cuánto se tarda en llegar de un sitio a otro y la duración de
 	 * la actividad. Debe llegar al punto de partida antes de que se cumpla el numHoras Máximo
 	 */
-	@Override
 	public void resolverProblema(boolean estrategia) {
 
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
@@ -109,8 +112,6 @@ public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 			mostrarConsultaItinerarioDia(solucionFinal.get(i));
 		}
 
-
-
 		float valorTotalViaje = 0;
 		for(int i = 0; i < solucionFinal.size(); i++) {
 			valorTotalViaje += calcularValorDiario(solucionFinal.get(i));
@@ -122,6 +123,10 @@ public class rutaTuristicaMultiArranque extends problemaRutasTuristicas {
 		System.out.println("Valor acumulado " + mejorValor);
 	}
 
+	/**
+	 * Método que devuelve que algoritmo inicial se aplica, aleatorio y grasp
+	 * @return boolean
+	 */
 	public boolean getAlgoritmoInicial() {
 		return algoritmo;
 	}

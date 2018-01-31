@@ -12,12 +12,32 @@ public class rutaTuristicaBusquedaMemoriaLargoPlazo extends problemaRutasTuristi
 	 */
 	private final int NUMSOLUCIONES = 30;
 	
+	/**
+	 * Número máximo de soluciones continuadas que contengan el mismo elemento
+	 */
 	private final int LIMITEMEMORIALARGOPLAZO = 3;
+	/**
+	 * Tiempo de espera en la lista Tabu, de 2 a 4
+	 */
 	private final int TIEMPOMEMORIALARGOPLAZO = 2;
-	//false para aleatorio 1 para grasp
+	
+	/**
+	 * Algoritmo que se ejecutará para la solución inicial, false para aleatorio 1 para grasp
+	 */
 	private boolean algoritmo; 
 	//Heuristica por cambio de entorno forzado. Solucion buena y cuando se repita mucho una ciudad, marcamos y estamos 4 turnos sin poder elegirla
 
+	/**
+	 * Constructor de la clase rutaTuristicaBusquedaMemoriaLargoPlazo
+	 * @param ficheroLugares			Fichero con la descripcion de los lugares
+	 * @param ficheroMatrizDistancias	Fichero con las distancias entre todos los lugares
+	 * @param ficheroMatrizTiempos		Fichero con los tiempos para llegar de un lugar a otro
+	 * @param numDias					Número de días del itinerario
+	 * @param numHorasDia				Número de horas diarias del itinerario
+	 * @param algor						Algoritmo que se ejecutará inicialmente, 0 para aleatorio 1 para grasp
+	 * @throws FileNotFoundException	Error, fichero no valido
+	 * @throws IOException				Error de entrada/salida
+	 */
 	public rutaTuristicaBusquedaMemoriaLargoPlazo(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia, boolean algor) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 		algoritmo = algor;
@@ -26,6 +46,15 @@ public class rutaTuristicaBusquedaMemoriaLargoPlazo extends problemaRutasTuristi
 	}
 
 	@Override
+	/**
+	 * Método heredado de problemaRutaTuristica que resuelve el problema de 
+	 * Gestor de Rutas Turísticas utilizando una heurística de búsqueda memoria a largo plazo
+	 * Existe un cambio del entorno forzado. Se generan soluciones utilizando algoritmo aleatorio o grasp. Si la solución vecina es mejor
+	 * que la actual, actualizamos la solucion.
+	 * Cuando se haya repetido LIMITEMEMORIALARGOPLAZO iteraciones un mismo lugar, se introduce en la lista tabú y se
+	 * calcula una solución que cumpla los requisitos y mantenga los demás lugares.
+	 * El problema acaba cuando se realicen NUMSOLUCIONES iteraciones
+	 */
 	public void resolverProblema(boolean Estrategia) {
 		ArrayList<ArrayList<ArrayList<Integer>>> conjuntosSoluciones = new ArrayList<ArrayList<ArrayList<Integer>>>();
 
@@ -148,6 +177,10 @@ public class rutaTuristicaBusquedaMemoriaLargoPlazo extends problemaRutasTuristi
 		System.out.println("Valor acumulado " + mejorValor);
 	}
 
+	/**
+	 * Método que devuelve que algoritmo inicial se aplica, aleatorio y grasp
+	 * @return boolean
+	 */
 	public boolean getAlgoritmoInicial() {
 		return algoritmo;
 	}

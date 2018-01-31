@@ -22,7 +22,18 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 	//false para aleatorio 1 para grasp
 	private boolean algoritmo; 
 	//Heuristica por cambio de entorno forzado. Solucion buena y cuando se repita mucho una ciudad, marcamos y estamos 4 turnos sin poder elegirla
-
+	
+	/**
+	 * Constructor de la clase rutaTuristicaBusquedaMemoriaLargoPlazo
+	 * @param ficheroLugares			Fichero con la descripcion de los lugares
+	 * @param ficheroMatrizDistancias	Fichero con las distancias entre todos los lugares
+	 * @param ficheroMatrizTiempos		Fichero con los tiempos para llegar de un lugar a otro
+	 * @param numDias					Número de días del itinerario
+	 * @param numHorasDia				Número de horas diarias del itinerario
+	 * @param algor						Algoritmo que se ejecutará inicialmente, 0 para aleatorio 1 para grasp
+	 * @throws FileNotFoundException	Error, fichero no valido
+	 * @throws IOException				Error de entrada/salida
+	 */
 	public rutaTuristicaBusquedaTabu(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia, boolean algor) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 		algoritmo = algor;
@@ -31,6 +42,17 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 	}
 
 	@Override
+	/**
+	 * Método heredado de problemaRutaTuristica que resuelve el problema de 
+	 * Gestor de Rutas Turísticas utilizando una heurística de búsqueda Tabú
+	 * Existe un cambio del entorno forzado. 
+	 * Se genera una solucion de inicio que puede ser aleatoria o Grasp.
+	 * Se realiza una búsqueda local intentando mejorar la solución. Si se mejora, se cambia.
+	 * Cuando en LIMITETABU iteraciones de solución, se repite una ciudad, esta se inserta en la lista Tabú 
+	 * durante 2 - 4 tiempos.
+	 * De esta manera se busca un agitamiento de la solucion
+	 * El problema acaba cuando se realicen NUMSOLUCIONES iteraciones
+	 */
 	public void resolverProblema(boolean Estrategia) {
 
 		ArrayList<Integer> mejorSolucion = new ArrayList<Integer>();
@@ -151,15 +173,15 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 			getLugaresVisitados().add(mejorSolucion);
 		}
 
-
-
-
-		
 		 System.out.println("\n-----------------------------------------");
 		 System.out.println(getLugaresVisitados());
 		 System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 
+	/**
+	 * Método que devuelve que algoritmo inicial se aplica, aleatorio y grasp
+	 * @return boolean
+	 */
 	public boolean getAlgoritmoInicial() {
 		return algoritmo;
 	}

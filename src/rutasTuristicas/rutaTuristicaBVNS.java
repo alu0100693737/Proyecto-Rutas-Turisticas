@@ -31,7 +31,9 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 	 */
 	private final int LRC = 3;
 
-	//false para aleatorio 1 para grasp
+	/**
+	 * false para aleatorio 1 para grasp
+	 */
 	private boolean algoritmo; 
 
 	//algoritmo false para aleatorio y true para grasp
@@ -118,7 +120,13 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 
-	//Tiene random cuando se elige cual eliminar
+	/**
+	 * Aplica una busqueda vns teniendo
+	 * @param solucionDiariaInicial Solucion actual
+	 * @param diasAnteriores Solucion de los dias anteriores si los hubiera
+	 * @param ronda	K actual
+	 * @return solucion encontrada
+	 */
 	public ArrayList<Integer> aplicarBVNS(ArrayList<Integer> solucionDiariaInicial, ArrayList<ArrayList<Integer>> diasAnteriores, int ronda) {
 
 		int rondaActual = ronda;
@@ -198,6 +206,10 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 		}
 	}
 
+	/**
+	 * Método que devuelve que algoritmo inicial se aplica, aleatorio y grasp
+	 * @return boolean
+	 */
 	public boolean getAlgoritmoInicial() {
 		return algoritmo;
 	}

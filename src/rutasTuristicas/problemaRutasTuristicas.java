@@ -328,6 +328,10 @@ public abstract class problemaRutasTuristicas {
 	}
 
 
+	/**
+	 * Método que realiza un algoritmo aleatorio para el dia actual. Utilizado para heuristicas comunes como Busqueda Tabu, Memoria Largo Plazo, 
+	 * Recocido Simulado y MultiArranque.
+	 */
 	public void solucionAleatoria() {
 		solucionDiaria = new ArrayList<Integer>();
 
@@ -337,6 +341,10 @@ public abstract class problemaRutasTuristicas {
 		solucionParcialAleatoria();
 	}
 
+	/**
+	 * Método utilizado en solucionAleatoria utilizado para añadir aleatoriamente elementos en el día actual
+	 * siempre que se cumplan las restricciones. La solucion se almacena en getSolucionDiaria().
+	 */
 	public void solucionParcialAleatoria() {
 		//Maximo de comparaciones para decidir que no se puede introducir ningun sitio mas sin sobrepasar la restriccion de tiempo
 		int maximoComparaciones = 0; 
@@ -375,6 +383,11 @@ public abstract class problemaRutasTuristicas {
 			}}
 		getSolucionDiaria().add(0);
 	}
+	
+	/**
+	 * Método que realiza un algoritmo GRASP para el dia actual. Utilizado para heuristicas comunes como Busqueda Tabu, Memoria Largo Plazo, 
+	 * Recocido Simulado y MultiArranque. Utilizado el LRC
+	 */
 
 	public void solucionGRASP() {
 		solucionDiaria = new ArrayList<Integer>();
@@ -383,6 +396,10 @@ public abstract class problemaRutasTuristicas {
 		solucionGRASPParcial();	
 	}
 
+	/**
+	 * Método utilizado en solucionGRASP utilizado para añadir aleatoriamente elementos en el día actual
+	 * siempre que se cumplan las restricciones. La solucion se almacena en getSolucionDiaria().
+	 */
 	public void solucionGRASPParcial() {
 		ArrayList<Point2D.Float> lugaresCandidatos = new ArrayList<Point2D.Float>();
 		int tiempoAcumulado = 0;
@@ -548,6 +565,10 @@ public abstract class problemaRutasTuristicas {
 		return lugaresVisitados;
 	}
 
+	/**
+	 * Método que devuelve una lista tabu de elementos que no pueden visitarse. Utilizado en alguna heurística
+	 * @return ArrayList de Point, (lugar, tiempoDeEspera)
+	 */
 	public ArrayList<Point> getListaTabu() {
 		return listaTabu;
 	}

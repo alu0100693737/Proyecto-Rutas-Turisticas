@@ -18,10 +18,22 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 	 */
 	private final int TEMPERATURA = 25;
 
-	//false para aleatorio 1 para grasp
+	/**
+	 * false para aleatorio 1 para grasp
+	 */
 	private boolean algoritmo; 
 
-	//algoritmo false para aleatorio y true para grasp
+	/**
+	 * Constructor de la clase rutaTuristicaRecocidoSimulado
+	 * @param ficheroLugares			Fichero con la descripcion de los lugares
+	 * @param ficheroMatrizDistancias	Fichero con las distancias entre todos los lugares
+	 * @param ficheroMatrizTiempos		Fichero con los tiempos para llegar de un lugar a otro
+	 * @param numDias					Número de días del itinerario
+	 * @param numHorasDia				Número de horas diarias del itinerario
+	 * @param algor						Algoritmo inicial elegido, 0 para aleatorio y 1 para grasp
+	 * @throws FileNotFoundException	Error, fichero no valido
+	 * @throws IOException				Error de entrada/salida
+	 */
 	public rutaTuristicaRecocidoSimulado(String ficheroLugares, String ficheroMatrizDistancias, String ficheroMatrizTiempos, int numDias, int numHorasDia, boolean algor) throws FileNotFoundException, IOException {
 		super(ficheroLugares, ficheroMatrizDistancias, ficheroMatrizTiempos, numDias, numHorasDia);
 		algoritmo = algor;
@@ -29,6 +41,16 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 	}
 
 	@Override
+	/**
+	 * Metodo que resuelve el problema de Gestor de Rutas Turísticas utilizando Recocido Simulado
+	 * Partimos de una solución inicial aleatoria o Grasp y aplicamos una busqueda local aleatoria:
+	 * 		Si se mejora la solución, se elige
+	 * 		Si no se mejora la solución, se decide con determinada probabilidad
+	 * En cada iteración se disminuye la probabilidad de aceptar una solución peor
+	 * 
+	 * 	e^Af/T
+	 *  Recocido modificado 1/(a + eAf/T)
+	 */
 	public void resolverProblema(boolean Estrategia) {
 
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
@@ -85,10 +107,15 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 		System.out.println("Valor total del viaje: " + calcularValorTotal(getLugaresVisitados()) + "\n");
 	}
 
-	
-	//Elegimos uno aleatoriamente, calculamos la diferencia de valor, si es mejor se asigna, si es peor se asigna con una determinada probabilidad
-	//e^Af/T
-	//Recocido modificado 1/(a + eAf/T)
+	/**
+	 * Método que aplica un recocido simulado con determinada probabilidad de aceptación si la solucion es peor
+	 * @param visitaDiaria		Solución diaria inicial	
+	 * @param diasAnteriores	Solución dias anteriores si los hubiera
+	 * @param temperatura		Probabilidad de aceptación de una peor solución
+	 * 		e^Af/T
+	 *		Recocido modificado 1/(a + eAf/T)
+	 * @return solucionEncontrada
+	 */
 	public ArrayList<Integer> aplicarRecocidoSimulado(ArrayList<Integer> visitaDiaria, ArrayList<ArrayList<Integer>> diasAnteriores, float temperatura) {
 		System.out.println("Actual " + visitaDiaria + " con valor " + calcularValorDiario(visitaDiaria) + "\n");
 		ArrayList<Integer> copiaDia = new ArrayList<Integer>(visitaDiaria);
@@ -161,6 +188,10 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 		}
 	}
 
+	/**
+	 * Método que devuelve que algoritmo inicial se aplica, aleatorio y grasp
+	 * @return boolean
+	 */
 	public boolean getAlgoritmoInicial() {
 		return algoritmo;
 	}

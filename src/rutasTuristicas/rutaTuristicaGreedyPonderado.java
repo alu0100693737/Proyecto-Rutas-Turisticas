@@ -62,8 +62,6 @@ public class rutaTuristicaGreedyPonderado extends problemaRutasTuristicas {
 			busquedalocal1a1 = false;
 		}
 
-
-		
 		//Para el conjunto de dias
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 			System.out.println("\nDia: " + (k + 1));
