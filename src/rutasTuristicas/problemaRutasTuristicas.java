@@ -180,8 +180,8 @@ public abstract class problemaRutasTuristicas {
 	}
 
 	/**
-	 * Método Búsqueda local que busca una mejora de la solución eliminando dos elementos
-	 * e introduciendo uno entre los vecinos que mejore el valor pero que ni supere el tiempo 
+	 * Método Búsqueda local que busca una mejora de la solución eliminando un elemento
+	 * e introduciendo otro entre los vecinos que mejore el valor pero que ni supere el tiempo 
 	 * limite diario ni se diferencie en más de 30min
 	 * @param visitaDiaria		Visita realizada los días anteriores
 	 * @param yaVisitados		Visitas realizadas ya durante el presente día

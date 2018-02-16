@@ -1,7 +1,9 @@
 package rutasTuristicas;
 
+import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -42,6 +44,11 @@ public class Principal {
 			System.out.println("\n\tEscribe una de las opciones");
 			opcion = sn.nextInt();
 
+			//Tiempo para el análisis de heuristicas
+			Clock tiempo = new Clock();
+			ArrayList<Point2D.Float> tiemposEjecucion = new ArrayList<Point2D.Float>();
+			boolean analisis = true;
+
 			switch(opcion){
 			case 1:
 				System.out.println("Algoritmo Aleatorio, posibilidad de Busqueda Local (2 a 1) y (1 a 1)");
@@ -69,6 +76,8 @@ public class Principal {
 				}
 				break;
 			case 5:
+
+
 				System.out.println("Recocido Simulado con algoritmo Aleatorio o GRASP");
 				System.out.println("Pulse 1 para utilizar un algoritmo aleatorio, pulse 2 para estrategia GRASP");
 				eleccion = sn.nextInt();
@@ -77,17 +86,22 @@ public class Principal {
 				} else if (eleccion == 2)  {
 					rutaTuristicaRecocidoSimulado recocido = new rutaTuristicaRecocidoSimulado(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
 				}
+
+
 				break;
 			case 6:
-				System.out.println("Búsqueda Tabú");
-				System.out.println("Búsqueda Tabú con Algoritmo Aleatorio o GRASP");
-				System.out.println("Pulse 1 para utilizar un algoritmo aleatorio, pulse 2 para estrategia GRASP");
-				eleccion = sn.nextInt();
-				if(eleccion == 1) {
+				
+					System.out.println("Búsqueda Tabú");
+					System.out.println("Búsqueda Tabú con Algoritmo Aleatorio o GRASP");
+					System.out.println("Pulse 1 para utilizar un algoritmo aleatorio, pulse 2 para estrategia GRASP");
+					eleccion = sn.nextInt();
+					if(eleccion == 1) {
 					rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), false);
-				} else if (eleccion == 2)  {
+					} else if (eleccion == 2)  {
 					rutaTuristicaBusquedaTabu busquedaTabu = new rutaTuristicaBusquedaTabu(args[0], args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), true);
 				}
+					
+
 				break;
 			case 7: 
 				System.out.println("VNS Básico con Algoritmo Aleatorio o GRASP");
@@ -100,6 +114,7 @@ public class Principal {
 				}
 				break;
 			case 8: 
+
 				System.out.println("Búsqueda Memoria Largo Plazo");
 				System.out.println("Pulse 1 para utilizar un algoritmo aleatorio, pulse 2 para estrategia GRASP");
 				eleccion = sn.nextInt();

@@ -178,7 +178,7 @@ public class rutaTuristicaRecocidoSimulado extends problemaRutasTuristicas {
 				//System.out.println("A " + (diferenciaValores/temperatura) + " E " + Math.E);
 				//System.out.println("Probabilidad de " + (2 / (1 + Math.pow(Math.E, (diferenciaValores/temperatura)))));
 				System.out.println("PROBABILIDAD " + (Math.pow(Math.E, -(diferenciaValores/temperatura))));
-				if((Math.pow(Math.E, -(diferenciaValores/temperatura))) > 0.90) {
+				if((Math.pow(Math.E, -(diferenciaValores/temperatura))) > 0.80) {
 					
 					System.out.println("CAMBIANDO AUNQUE ES PEOR");
 					return copiaDia;

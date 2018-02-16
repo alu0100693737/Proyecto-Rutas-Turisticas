@@ -75,7 +75,7 @@ public class rutaTuristicaGRASPPonderado extends problemaRutasTuristicas {
 			busquedalocal2a1 = false;
 			busquedalocal1a1 = false;
 		}
-
+		
 		//Introducir factor ponderado
 		lugaresVisitados =  new ArrayList<ArrayList<Integer>>();
 		lugaresCandidatos = new ArrayList<Point2D.Float>();

@@ -146,9 +146,10 @@ public class rutaTuristicaBusquedaTabu extends problemaRutasTuristicas {
 					for(int j = 1; j < (getSolucionDiaria().size() - 1); j++) {
 						if(solucionesIteracionesDiarias.get(solucionesIteracionesDiarias.size() - 1).contains(getSolucionDiaria().get(j))) {
 							if(solucionesIteracionesDiarias.get(solucionesIteracionesDiarias.size() - 2).contains(getSolucionDiaria().get(j))) {									
-								//System.out.println("\nELEMENTO BLOQUEADO: " + getSolucionDiaria().get(j));
+								System.out.println(getSolucionDiaria() + " " + solucionesIteracionesDiarias.get(solucionesIteracionesDiarias.size() - 1) + " " + solucionesIteracionesDiarias.get(solucionesIteracionesDiarias.size() - 2));
+								System.out.println("\nELEMENTO BLOQUEADO: " + getSolucionDiaria().get(j));
 								int tiempoEspera =(int)(Math.random() * ((TIEMPOTABU + 3) - TIEMPOTABU) + TIEMPOTABU);
-								//System.out.println("Tiempo de espera " + tiempoEspera);
+								System.out.println("Tiempo de espera " + tiempoEspera);
 								getListaTabu().add(new Point(getSolucionDiaria().get(j), tiempoEspera));
 							}
 						}

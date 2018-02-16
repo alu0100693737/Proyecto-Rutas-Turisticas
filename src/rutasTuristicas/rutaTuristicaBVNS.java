@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Clase rutaTuristicaBVNS (Basic VNS)
  * Realiza un itinerario de viaje teniendo en cuenta el número de días y las horas máximas
  * diarias de viaje. 
- * Se parte de una solución aleatoria y se intenta mejorar realizando una busqueda local con cambio en la estructura
+ * Se parte de una solución aleatoria o grasp y se intenta mejorar realizando una busqueda local con cambio en la estructura
  * de vecindad.
  * 
  * @author Ivan Garcia Campos   alu0100693737@ull.edu.es
@@ -24,7 +24,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 	/**
 	 * Máximo cambio en el entorno permitido, se empezará por k = 1. 
 	 */
-	private final static int K = 4;
+	private final static int K = 3;
 
 	/** 
 	 * Número de candidatos para realizar la elección del próximo lugar en algoritmo GRASP
@@ -67,7 +67,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 		//Para el conjunto de días
 		for(int k = 0; k < getNumDiasEstancia(); k++) {
 
-			System.out.println("Dia numero " + (k + 1));
+			System.out.println("\nDia numero " + (k + 1));
 			if(getAlgoritmoInicial() == false) {
 				solucionAleatoria();
 				System.out.println("Solución aleatoria con agitación: ");
@@ -162,7 +162,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 					//Si no ha sido visitado ni los dias anteriores ni el actual
 					if(!yaVisitado(elegido, diasAnteriores, solucionDiariaInicial) ) {
 						copiaDia.add(1, elegido);
-						System.out.println("Se añadio: " + elegido);
+						//System.out.println("Se añadio: " + elegido);
 					} else {
 						System.out.println("Problema en " + elegido);
 						System.out.println(Math.abs(calcularTiempoEmpleado(copiaDia) - calcularTiempoEmpleado(solucionDiariaInicial)));
@@ -174,7 +174,7 @@ public class rutaTuristicaBVNS extends problemaRutasTuristicas {
 					System.out.println("Encontrado " + calcularTiempoEmpleado(copiaDia));
 
 				} else {
-					System.out.println("Se borro");
+					//System.out.println("Se borro");
 					copiaDia = new ArrayList<Integer>(copiaEliminados);
 					numComparaciones++;
 				}
